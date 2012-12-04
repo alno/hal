@@ -53,7 +53,9 @@ helpers do
   end
 
   def camera_records(camera)
-    records.where(:thumb__camera => cameras.index(camera) + 1)
+    cam_index = cameras.index(camera) + 1
+
+    records.where(:thumb__camera => cam_index, :video__camera => cam_index)
   end
 
 end
@@ -79,6 +81,8 @@ get '/cameras/:camera/records' do |camera|
 
   @camera = camera
   @records = camera_records(camera).all
+
+  puts camera_records(camera).sql
 
   puts @records.inspect
 
