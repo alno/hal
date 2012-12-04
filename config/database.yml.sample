@@ -1,0 +1,9 @@
+
+development: &base
+  adapter: postgres
+  host: localhost
+  database: monitoring
+  username: monitoring
+  password: qwerty
+
+production: *base
