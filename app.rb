@@ -43,7 +43,7 @@ helpers do
     if development?
       "http://hal.local/records/#{parts[-2]}/files/#{parts[-1]}"
     else
-      "/cameras/#{parts[-2]}/records/files/#{parts[-1]}"
+      "/records/#{parts[-2]}/files/#{parts[-1]}"
     end
   end
 
