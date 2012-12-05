@@ -60,6 +60,10 @@ helpers do
     records.where(:thumb__camera => cam_index, :video__camera => cam_index)
   end
 
+  def last_records
+    records.limit(4)
+  end
+
 end
 
 get '/' do
