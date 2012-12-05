@@ -1,0 +1,7 @@
+
+ul.block-grid.two-up.mobile-one-up
+  - cameras.each do |cam|
+    li
+      a href=to("/cameras/#{cam}")
+        img src=camera_stream(cam)
+

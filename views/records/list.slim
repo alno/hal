@@ -1,0 +1,14 @@
+
+ul.accordion
+  - @records.chunk{ |rec| time_for(rec[:time]).to_date }.each do |date, records|
+    li
+      .title
+        h4
+          | #{date} (#{records.size} total)
+      .content
+        ul.block-grid.four-up.mobile-one-up
+          - records.each do |rec|
+            li
+              a href=file_url(rec[:video_path])
+                img src=file_url(rec[:thumb_path])
+              = time_for rec[:time]

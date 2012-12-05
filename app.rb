@@ -2,6 +2,7 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'compass'
+require 'zurb-foundation'
 require 'slim'
 require 'database'
 
@@ -40,7 +41,7 @@ helpers do
     parts = path.split('/')
 
     if development?
-      "http://hal.local/cameras/#{parts[-2]}/records/files/#{parts[-1]}"
+      "http://hal.local/records/#{parts[-2]}/files/#{parts[-1]}"
     else
       "/cameras/#{parts[-2]}/records/files/#{parts[-1]}"
     end
@@ -49,7 +50,8 @@ helpers do
   def records
     db[:camera_events.as(:thumb)].join(:camera_events.as(:video), :video__event => :thumb__event).
       where(:thumb__file_type => 1, :video__file_type => 8).
-      select(:thumb__event, :thumb__file_name => :thumb_path, :video__file_name => :video_path)
+      select(:thumb__event, :thumb__file_name => :thumb_path, :video__file_name => :video_path, :video__time => :time).
+      order{ video__time.desc }
   end
 
   def camera_records(camera)
@@ -65,28 +67,36 @@ get '/' do
 end
 
 get '/cameras' do
-  slim :cameras
+  @section = :cameras
+
+  slim :'cameras/index'
 end
 
 get '/cameras/:camera' do |camera|
   halt 404 unless cameras.include? camera
 
+  @section = :cameras
   @camera = camera
 
-  slim :camera
+  slim :'cameras/show'
 end
 
-get '/cameras/:camera/records' do |camera|
+get '/records' do
+  @section = :records
+
+  @records = records.all
+
+  slim :'records/list'
+end
+
+get '/records/:camera' do |camera|
   halt 404 unless cameras.include? camera
 
+  @section = :records
   @camera = camera
   @records = camera_records(camera).all
 
-  puts camera_records(camera).sql
-
-  puts @records.inspect
-
-  slim :records
+  slim :'records/list'
 end
 
 get '/cameras/:camera/stream' do |camera|
@@ -95,7 +105,7 @@ get '/cameras/:camera/stream' do |camera|
   "There should be MJPEG stream"
 end
 
-get '/cameras/:camera/records/files/*path' do |camera, path|
+get '/records/:camera/files/*path' do |camera, path|
   halt 404 unless cameras.include? camera
 
   "There should be NGINX camera records handler"

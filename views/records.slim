@@ -1,7 +1,0 @@
-h2 Records for #{@camera}
-
-ul
-  - @records.each do |record|
-    li
-      a href=file_url(record[:video_path])
-        img src=file_url(record[:thumb_path]) width=320 height=240 style="margin: 10px"

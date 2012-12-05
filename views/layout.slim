@@ -1,7 +1,44 @@
+doctype html
 html
   head
     title HAL
-    link rel="stylesheet" href="css/app.css"
+    link rel="stylesheet" href=url("/css/app.css")
+    script src=url("/js/foundation/modernizr.foundation.js")
   body
-    h1 HAL
-    == yield
+    nav.top-bar
+      ul
+        li.name
+          h1
+            a{ href=to('/') } HAL
+        li.toggle-topbar
+          a href="#"
+
+      section
+        ul.left
+          li.divider
+          li.has-dropdown
+            a{ class=(@section == :cameras ? 'active' : '') href=to('/cameras') } Cameras
+            ul.dropdown
+              - cameras.each do |cam|
+                li
+                  a{ href=to("/cameras/#{cam}") }= cam
+
+          li.divider
+          li.has-dropdown
+            a{ class=(@section == :records ? 'active' : '') href=to('/records') } Records
+            ul.dropdown
+              - cameras.each do |cam|
+                li
+                  a{ href=to("/records/#{cam}") }= cam
+
+          li.divider
+
+    .row
+      section role="main"
+        == yield
+
+    script src=url("/js/foundation/jquery.js")
+    script src=url("/js/foundation/jquery.foundation.accordion.js")
+    script src=url("/js/foundation/jquery.placeholder.js")
+
+    script src=url("/js/foundation/app.js")

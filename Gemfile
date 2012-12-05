@@ -7,7 +7,7 @@ gem 'pg'
 gem 'rake'
 gem 'slim'
 
-gem 'compass'
+gem 'zurb-foundation'
 gem 'unicorn'
 
 group :development do

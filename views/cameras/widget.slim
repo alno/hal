@@ -1,0 +1,8 @@
+h2
+  a{ href=to('/cameras') } Cameras
+
+ul.block-grid.four-up.mobile-one-up
+  - cameras.each do |cam|
+    li
+      a href=to("/cameras/#{cam}")
+        img src=camera_stream(cam)
