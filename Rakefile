@@ -26,7 +26,7 @@ namespace :records do
     else
       ids, files = records.transpose
 
-      puts "Removing records: #{ids.inpsect}"
+      puts "Removing records: #{ids.inspect}"
 
       # Remove old records from database
       DB[:camera_events].where(:id => ids).delete
