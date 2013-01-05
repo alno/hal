@@ -9,6 +9,7 @@ gem 'slim'
 
 gem 'zurb-foundation'
 gem 'unicorn'
+gem 'whenever'
 
 group :development do
   gem 'sinatra-contrib'
