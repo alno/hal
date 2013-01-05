@@ -24,9 +24,9 @@ namespace :records do
     if records.empty?
       puts "No old records found"
     else
-      puts "Removing records: #{ids.inpsect}"
-
       ids, files = records.transpose
+
+      puts "Removing records: #{ids.inpsect}"
 
       # Remove old records from database
       DB[:camera_events].where(:id => ids).delete
