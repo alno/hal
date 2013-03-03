@@ -1,6 +1,6 @@
 
 ul.accordion
-  - @records.chunk{ |rec| time_for(rec[:time]).to_date }.each do |date, records|
+  - @records.chunk{ |rec| time_for(rec.time).to_date }.each do |date, records|
     li
       .title
         h4
@@ -9,6 +9,6 @@ ul.accordion
         ul.block-grid.four-up.mobile-one-up
           - records.each do |rec|
             li
-              a href=file_url(rec[:video_path])
-                img src=file_url(rec[:thumb_path])
-              = time_for rec[:time]
+              a href=rec.video_url
+                img src=rec.thumb_url
+              = time_for rec.time

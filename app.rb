@@ -8,6 +8,7 @@ require 'slim'
 require 'database'
 require 'config'
 require 'camera'
+require 'record'
 
 configure do
   Compass.configuration do |config|
@@ -23,31 +24,6 @@ configure do
 end
 
 helpers do
-
-  def db
-    DB
-  end
-
-  def file_url(path)
-    parts = path.split('/')
-
-    APP_CONFIG['urls']['record'].gsub(':camera', parts[-2]).gsub(':path', parts[-1])
-  end
-
-  def records
-    db[:camera_events.as(:thumb)].join(:camera_events.as(:video), :video__event => :thumb__event).
-      where(:thumb__file_type => 1, :video__file_type => 8).
-      select(:thumb__event, :thumb__file_name => :thumb_path, :video__file_name => :video_path, :video__time => :time).
-      order{ video__time.desc }
-  end
-
-  def camera_records(camera)
-    records.where(:thumb__camera => camera.index, :video__camera => camera.index)
-  end
-
-  def last_records
-    records.limit(4)
-  end
 
 end
 
@@ -71,7 +47,7 @@ end
 get '/records' do
   @section = :records
 
-  @records = records.all
+  @records = Record.all
 
   slim :'records/list'
 end
@@ -80,7 +56,7 @@ get '/records/:id' do |id|
   @section = :records
   @camera = Camera.find(id) or halt 404
 
-  @records = camera_records(@camera).all
+  @records = @camera.records
 
   slim :'records/list'
 end

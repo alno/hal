@@ -2,8 +2,8 @@ h2
   a{ href=to('/records') } Last records
 
 ul.block-grid.four-up.mobile-one-up
-  - last_records.each do |rec|
+  - Record.limit(4).each do |rec|
     li
-      a href=file_url(rec[:video_path])
-        img src=file_url(rec[:thumb_path])
-      = time_for rec[:time]
+      a href=rec.video_url
+        img src=rec.thumb_url
+      = time_for rec.time

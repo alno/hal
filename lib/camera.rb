@@ -20,4 +20,8 @@ class Camera < Struct.new(:id, :index, :name)
     APP_CONFIG['urls']['camera'].gsub(':camera', id)
   end
 
+  def records
+    Record.where(:thumb__camera => index, :video__camera => index)
+  end
+
 end
