@@ -7,7 +7,7 @@ gem 'pg'
 gem 'rake'
 gem 'slim'
 
-gem 'zurb-foundation'
+gem 'zurb-foundation', '~> 3.2.5'
 gem 'unicorn'
 gem 'whenever'
 
