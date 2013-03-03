@@ -4,7 +4,10 @@ require 'sinatra/reloader' if development?
 require 'compass'
 require 'zurb-foundation'
 require 'slim'
+
 require 'database'
+require 'config'
+require 'camera'
 
 configure do
   Compass.configuration do |config|
@@ -25,26 +28,10 @@ helpers do
     DB
   end
 
-  def cameras
-    @cameras = ['degu', 'door']
-  end
-
-  def camera_stream(camera)
-    if development?
-      "http://hal.local/cameras/#{camera}/stream"
-    else
-      "/cameras/#{camera}/stream"
-    end
-  end
-
   def file_url(path)
     parts = path.split('/')
 
-    if development?
-      "http://hal.local/records/#{parts[-2]}/files/#{parts[-1]}"
-    else
-      "/records/#{parts[-2]}/files/#{parts[-1]}"
-    end
+    APP_CONFIG['urls']['record'].gsub(':camera', parts[-2]).gsub(':path', parts[-1])
   end
 
   def records
@@ -55,9 +42,7 @@ helpers do
   end
 
   def camera_records(camera)
-    cam_index = cameras.index(camera) + 1
-
-    records.where(:thumb__camera => cam_index, :video__camera => cam_index)
+    records.where(:thumb__camera => camera.index, :video__camera => camera.index)
   end
 
   def last_records
@@ -76,11 +61,9 @@ get '/cameras' do
   slim :'cameras/index'
 end
 
-get '/cameras/:camera' do |camera|
-  halt 404 unless cameras.include? camera
-
+get '/cameras/:id' do |id|
   @section = :cameras
-  @camera = camera
+  @camera = Camera.find(id) or halt 404
 
   slim :'cameras/show'
 end
@@ -93,24 +76,23 @@ get '/records' do
   slim :'records/list'
 end
 
-get '/records/:camera' do |camera|
-  halt 404 unless cameras.include? camera
-
+get '/records/:id' do |id|
   @section = :records
-  @camera = camera
-  @records = camera_records(camera).all
+  @camera = Camera.find(id) or halt 404
+
+  @records = camera_records(@camera).all
 
   slim :'records/list'
 end
 
-get '/cameras/:camera/stream' do |camera|
-  halt 404 unless cameras.include? camera
+get '/cameras/:id/stream' do |id|
+  Camera.find(id) or halt 404
 
   "There should be MJPEG stream"
 end
 
-get '/records/:camera/files/*path' do |camera, path|
-  halt 404 unless cameras.include? camera
+get '/records/:id/files/*path' do |id, path|
+  Camera.find(id) or halt 404
 
   "There should be NGINX camera records handler"
 end

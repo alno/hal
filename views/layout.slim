@@ -19,17 +19,17 @@ html
           li.has-dropdown
             a{ class=(@section == :cameras ? 'active' : '') href=to('/cameras') } Cameras
             ul.dropdown
-              - cameras.each do |cam|
+              - Camera.each do |cam|
                 li
-                  a{ href=to("/cameras/#{cam}") }= cam
+                  a{ href=to("/cameras/#{cam.id}") }= cam.name
 
           li.divider
           li.has-dropdown
             a{ class=(@section == :records ? 'active' : '') href=to('/records') } Records
             ul.dropdown
-              - cameras.each do |cam|
+              - Camera.each do |cam|
                 li
-                  a{ href=to("/records/#{cam}") }= cam
+                  a{ href=to("/records/#{cam.id}") }= cam.name
 
           li.divider
 

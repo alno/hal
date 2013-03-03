@@ -1,5 +1,5 @@
 
 .seven.columns.centered
-  h2= @camera
+  h2= @camera.name
 
-  img src=camera_stream(@camera)
+  img src=@camera.stream_url
