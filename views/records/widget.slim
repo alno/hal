@@ -4,6 +4,7 @@ h2
 ul.block-grid.four-up.mobile-one-up
   - Record.limit(4).each do |rec|
     li
-      a href=rec.video_url
-        img src=rec.thumb_url
+      video controls="true" preload="no" width="320" height="240" poster=rec.thumb_url
+        source src=rec.video_url type='video/ogg'
+
       = time_for rec.time
