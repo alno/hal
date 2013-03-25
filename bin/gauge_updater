@@ -17,7 +17,8 @@ catch :halt do
     puts "Updating gauges: #{Time.now}"
 
     Gauge.each do |g|
-      g.update ow.read(g.source)
+      value = ow.read g.source
+      g.update value if value
     end
   end
 end
