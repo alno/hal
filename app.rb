@@ -9,6 +9,7 @@ require 'database'
 require 'config'
 require 'camera'
 require 'record'
+require 'gauge'
 
 configure do
   Compass.configuration do |config|
