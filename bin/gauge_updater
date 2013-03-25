@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+$:.unshift('./lib')
+
+require 'gauge'
+require 'onewire'
+
+ow = Onewire.client
+
+trap("SIGINT")  { throw :halt }
+trap("SIGTERM") { throw :halt }
+
+catch :halt do
+  loop do
+    puts "Updating gauges..."
+
+    Gauge.each do |g|
+      g.update ow.read(g.source)
+    end
+
+    sleep 60
+  end
+end
+
+puts "Exiting"
