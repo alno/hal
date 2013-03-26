@@ -1,0 +1,5 @@
+
+.seven.columns.centered
+  h2= @gauge.name
+
+  #gauge_chart style="height: 400px; min-width: 600px" data-title=@gauge.name data-values=@gauge.values_as_json

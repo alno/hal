@@ -25,4 +25,8 @@ class Gauge < Struct.new(:id, :index, :name, :source)
     DB[:gauge_values].where(gauge: index)
   end
 
+  def values_as_json
+    values.select(:time, :value).map{|r| [r[:time].to_i, r[:value]]}
+  end
+
 end

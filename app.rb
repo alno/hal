@@ -1,6 +1,7 @@
 
 require 'sinatra'
 require 'sinatra/reloader' if development?
+require 'sinatra/json'
 require 'compass'
 require 'zurb-foundation'
 require 'slim'
@@ -72,6 +73,19 @@ get '/records/:id/files/*path' do |id, path|
   Camera.find(id) or halt 404
 
   "There should be NGINX camera records handler"
+end
+
+get '/gauges/:id' do |id|
+  @section = :gauges
+  @gauge = Gauge.find(id) or halt 404
+
+  slim :'gauges/show'
+end
+
+get '/gauges/:id/data' do |id|
+  @gauge = Gauge.find(id) or halt 404
+
+  json @gauge.values_as_json
 end
 
 get "/css/*.css" do |path|

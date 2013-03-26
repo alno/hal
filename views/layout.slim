@@ -32,6 +32,14 @@ html
                   a{ href=to("/records/#{cam.id}") }= cam.name
 
           li.divider
+          li.has-dropdown
+            a{ class=(@section == :gauges ? 'active' : '') href=to('/gauges') } Gauges
+            ul.dropdown
+              - Gauge.each do |g|
+                li
+                  a{ href=to("/gauges/#{g.id}") }= g.name
+
+          li.divider
 
     .row
       section role="main"
@@ -40,5 +48,7 @@ html
     script src=url("/js/foundation/jquery.js")
     script src=url("/js/foundation/jquery.foundation.accordion.js")
     script src=url("/js/foundation/jquery.placeholder.js")
+
+    script src="http://code.highcharts.com/stock/highstock.js"
 
     script src=url("/js/foundation/app.js")

@@ -35,4 +35,28 @@
     });
   }
 
+  $('#gauge_chart').each(function(){
+    var chart = $(this);
+
+    chart.highcharts('StockChart', {
+
+      rangeSelector : {
+        selected : 1
+      },
+
+      title : {
+        text : chart.data('title')
+      },
+
+      series : [{
+        name : chart.data('title'),
+        data : chart.data('values'),
+        tooltip: {
+          valueDecimals: 2
+        }
+      }]
+    });
+
+  });
+
 })(jQuery, this);
