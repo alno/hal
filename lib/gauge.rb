@@ -26,7 +26,7 @@ Gauge = Struct.new :id, :index, :name, :source do
   end
 
   def values_as_json
-    values.select(:time, :value).map{|r| [r[:time].to_i, r[:value]]}
+    values.select(:time, :value).map{|r| [r[:time].to_i * 1000, r[:value]]}
   end
 
 end
