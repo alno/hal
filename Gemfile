@@ -1,14 +1,20 @@
 source 'https://rubygems.org'
 
+# Sinatra and extensions
 gem 'sinatra'
 gem 'sinatra-contrib'
+gem 'sinatra-sprockets-ext'
 
 gem 'sequel'
 gem 'pg'
 gem 'rake'
 gem 'slim'
 
-gem 'zurb-foundation', '~> 3.2.5'
 gem 'unicorn'
 gem 'whenever'
 gem 'onewire'
+
+# Frontend
+gem 'coffee-script'
+gem 'zurb-foundation'
+gem 'therubyracer'

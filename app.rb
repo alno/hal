@@ -1,9 +1,8 @@
 
 require 'sinatra'
 require 'sinatra/reloader' if development?
+require 'sinatra/sprockets'
 require 'sinatra/json'
-require 'compass'
-require 'zurb-foundation'
 require 'slim'
 
 require 'database'
@@ -12,21 +11,14 @@ require 'camera'
 require 'record'
 require 'gauge'
 
-configure do
-  Compass.configuration do |config|
-    config.project_path = File.dirname __FILE__
-    config.sass_dir = File.join "views", "sass"
-    config.images_dir = File.join "views", "images"
-    config.http_path = "/"
-    config.http_images_path = "/images"
-    config.http_stylesheets_path = "/css"
-  end
+Sinatra.register Sinatra::Sprockets
 
-  set :sass, Compass.sass_engine_options
-end
-
-helpers do
-
+Sinatra::Sprockets.configure do |config|
+  config.compile = false         # On-the-fly compilation
+  config.compress = false        # Compress assets
+  config.digest = false          # Append a digest to URLs
+  config.css_compressor = false  # CSS compressor instance
+  config.js_compressor = false   # JS compressor instance
 end
 
 get '/' do
@@ -86,9 +78,4 @@ get '/gauges/:id/data' do |id|
   @gauge = Gauge.find(id) or halt 404
 
   json @gauge.values_as_json
-end
-
-get "/css/*.css" do |path|
-  content_type "text/css", charset: "utf-8"
-  sass :"sass/#{path}"
 end

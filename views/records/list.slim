@@ -1,15 +1,20 @@
 
-ul.accordion
+.section-container.accordion data-section='accordion'
   - @records.chunk{ |rec| time_for(rec.time).to_date }.each do |date, records|
-    li
-      .title
-        h4
+    section.section
+      p.title
+        a href="#"
           | #{date} (#{records.size} total)
       .content
-        ul.block-grid.four-up.mobile-one-up
+        ul.small-block-grid-4
           - records.each do |rec|
             li
-              video controls="true" preload="no" width="320" height="240" poster=rec.thumb_url
-                source src=rec.video_url type='video/ogg'
+              .reveal-modal id="video_#{rec.id}" style="text-align: center;"
+                video controls="true" preload="none" width="640" height="480" poster=rec.thumb_url
+                  source src=rec.video_url type='video/ogg'
 
-              = time_for rec.time
+              a.th.radius href='#' data-reveal-id="video_#{rec.id}"
+                img src=rec.thumb_url
+
+                = rec.time.strftime('%Y-%m-%d %H:%M')
+

@@ -2,18 +2,17 @@ doctype html
 html
   head
     title HAL
-    link rel="stylesheet" href=url("/css/app.css")
-    script src=url("/js/foundation/modernizr.foundation.js")
+    == stylesheet_link_tag :app
   body
     nav.top-bar
-      ul
+      ul.title-area
         li.name
           h1
             a{ href=to('/') } HAL
         li.toggle-topbar
           a href="#"
 
-      section
+      section.top-bar-section
         ul.left
           li.divider
           li.has-dropdown
@@ -45,10 +44,5 @@ html
       section role="main"
         == yield
 
-    script src=url("/js/foundation/jquery.js")
-    script src=url("/js/foundation/jquery.foundation.accordion.js")
-    script src=url("/js/foundation/jquery.placeholder.js")
-
-    script src=url("/js/highstock.js")
-
-    script src=url("/js/foundation/app.js")
+    script src="//yandex.st/jquery/1.7.1/jquery.min.js"
+    == javascript_include_tag :app

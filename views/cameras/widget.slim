@@ -1,8 +1,8 @@
 h2
   a{ href=to('/cameras') } Cameras
 
-ul.block-grid.four-up.mobile-one-up
+.small-block-grid-4
   - Camera.each do |cam|
     li
-      a href=to("/cameras/#{cam.id}")
+      a.th.radius href=to("/cameras/#{cam.id}")
         img src=cam.stream_url

@@ -1,7 +1,7 @@
 
-ul.block-grid.two-up.mobile-one-up
+ul.small-block-grid-4
   - Camera.each do |cam|
     li
-      a href=to("/cameras/#{cam.id}")
+      a.th.radius href=to("/cameras/#{cam.id}")
         img src=cam.stream_url
 
