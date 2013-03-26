@@ -9,6 +9,9 @@ $('#gauge_chart').each ->
   chart = $(@)
 
   chart.highcharts 'StockChart',
+    global:
+      useUTC: true
+
     rangeSelector:
       selected: 1
 
