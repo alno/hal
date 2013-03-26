@@ -5,12 +5,14 @@
 
 $(document).foundation()
 
+Highcharts.setOptions
+  global:
+    useUTC: false
+
 $('#gauge_chart').each ->
   chart = $(@)
 
   chart.highcharts 'StockChart',
-    global:
-      useUTC: true
 
     rangeSelector:
       selected: 1
@@ -24,4 +26,3 @@ $('#gauge_chart').each ->
       tooltip:
         valueDecimals: 2
     }]
-
