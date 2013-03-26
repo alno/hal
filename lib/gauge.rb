@@ -1,7 +1,7 @@
 require 'config'
 require 'database'
 
-class Gauge < Struct.new(:id, :index, :name, :source)
+Gauge = Struct.new :id, :index, :name, :source do
 
   def self.all
     @gauges ||= APP_CONFIG['gauges'].map { |id, data|

@@ -1,6 +1,6 @@
 require 'config'
 
-class Camera < Struct.new(:id, :index, :name)
+Camera = Struct.new :id, :index, :name do
 
   def self.all
     @cameras ||= APP_CONFIG['cameras'].map { |id, data|
