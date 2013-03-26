@@ -16,6 +16,30 @@ $('#gauge_chart').each ->
 
     rangeSelector:
       selected: 1
+      buttons: [{
+        type: 'hour',
+        count: 1,
+        text: '1h'
+      }, {
+        type: 'day',
+        count: 1,
+        text: '1d'
+      }, {
+        type: 'week',
+        count: 1,
+        text: '1w'
+      }, {
+        type: 'month',
+        count: 1,
+        text: '1m'
+      }, {
+        type: 'year',
+        count: 1,
+        text: '1y'
+      }, {
+        type: 'all',
+        text: 'All'
+      }]
 
     title:
       text: chart.data('title')
@@ -23,6 +47,7 @@ $('#gauge_chart').each ->
     series: [{
       name: chart.data('title'),
       data: chart.data('values'),
+      type: 'spline',
       tooltip:
         valueDecimals: 2
     }]
