@@ -2,3 +2,4 @@
 config/database.yml
 config/application.yml
 .sass-cache
+public/assets

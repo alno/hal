@@ -2,14 +2,12 @@ $:.unshift('./lib')
 
 require './app'
 
-map "/#{Sinatra::Sprockets.config.prefix}" do
-  foundation = Bundler.load.specs.find{|s| s.name == 'zurb-foundation' }.full_gem_path
-  assets = Sinatra::Sprockets.environment
+unless production?
+  require './assets'
 
-  assets.append_path File.join(foundation, 'js')
-  assets.append_path File.join(foundation, 'scss')
-
-  run assets
+  map "/#{Sinatra::Sprockets.config.prefix}" do
+    run app_assets
+  end
 end
 
 run Sinatra::Application

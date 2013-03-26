@@ -39,3 +39,19 @@ namespace :records do
   end
 
 end
+
+namespace :assets do
+
+  task :precompile do
+    require 'sinatra'
+    require 'sinatra/sprockets'
+    require 'sinatra/sprockets/static_compiler'
+
+    Sinatra.register Sinatra::Sprockets
+
+    require './assets'
+
+    Sinatra::Sprockets::StaticCompiler.new(app_assets, 'public/assets', [/app\..*/], digest: false).compile
+  end
+
+end
