@@ -6,7 +6,7 @@ class Record < Sequel::Model
   set_dataset( DB[:camera_events.as(:thumb)].
     join(:camera_events.as(:video), :video__event => :thumb__event).
     where(:thumb__file_type => 1, :video__file_type => 8).
-    select(:thumb__event, :thumb__file_name => :thumb_path, :video__file_name => :video_path, :video__time => :time).
+    select(:thumb__event => :event, :thumb__camera => :camera, :thumb__file_name => :thumb_path, :video__file_name => :video_path, :video__time => :time).
     order{ video__time.desc }
   )
 

@@ -9,11 +9,11 @@
         ul.small-block-grid-4
           - records.each do |rec|
             li
-              .reveal-modal id="video_#{rec.id}" style="text-align: center;"
+              .reveal-modal id="video_#{rec.camera}_#{rec.event}" style="text-align: center;"
                 video controls="true" preload="none" width="640" height="480" poster=rec.thumb_url
                   source src=rec.video_url type='video/ogg'
 
-              a.th.radius href='#' data-reveal-id="video_#{rec.id}"
+              a.th.radius href='#' data-reveal-id="video_#{rec.camera}_#{rec.event}"
                 img src=rec.thumb_url
 
                 = rec.time.strftime('%Y-%m-%d %H:%M')
