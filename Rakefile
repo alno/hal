@@ -13,6 +13,28 @@ namespace :db do
 
 end
 
+namespace :gauges do
+
+  desc "Build missing gauge aggregations"
+  task :aggregate do
+    require 'database'
+
+    [:hour, :day].each do |agg|
+      groupped_gauges = DB[:gauge_values].
+        where("time < date_trunc('#{agg}', current_timestamp)").
+        group{ `gauge, date_trunc('#{agg}', time)` }.
+        select{ `gauge, date_trunc('#{agg}', time) AS start, date_trunc('#{agg}', time) + interval '1 #{agg}' AS end, AVG(value) AS value` }
+
+      new_aggregations = DB[groupped_gauges => :g].
+        where("NOT EXISTS (SELECT 1 FROM gauge_value_#{agg}s a WHERE a.gauge = g.gauge AND time BETWEEN g.start AND g.end)").
+        select{ `g.gauge, g.start + 0.5 * (g.end - g.start), g.value` }
+
+      DB["gauge_value_#{agg}s".to_sym].import [:gauge, :time, :value], new_aggregations
+    end
+  end
+
+end
+
 namespace :records do
 
   desc "Cleanup old records"
