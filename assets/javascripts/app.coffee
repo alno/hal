@@ -10,12 +10,20 @@ Highcharts.setOptions
     useUTC: false
 
 $('#gauge_chart').each ->
-  chart = $(@)
+  container = $(@)
 
-  chart.highcharts 'StockChart',
+  loadData = (e) ->
+    chart = container.highcharts()
+    chart.showLoading('Loading data from server...')
+
+    $.getJSON "#{container.data('url')}?from=#{Math.round(e.min)}&to=#{Math.round(e.max)}", (data) ->
+      chart.series[0].setData(data)
+      chart.hideLoading()
+
+  container.highcharts 'StockChart',
 
     rangeSelector:
-      selected: 1
+      selected: 4
       buttons: [{
         type: 'hour',
         count: 1,
@@ -42,12 +50,28 @@ $('#gauge_chart').each ->
       }]
 
     title:
-      text: chart.data('title')
+      text: container.data('title')
 
     series: [{
-      name: chart.data('title'),
-      data: chart.data('values'),
+      name: container.data('title'),
+      data: container.data('values'),
       type: 'spline',
       tooltip:
         valueDecimals: 2
     }]
+
+    chart:
+      zoomType: 'x'
+
+    navigator:
+      adaptToUpdatedData: false
+      series:
+        data: container.data('values')
+
+    scrollbar:
+      liveRedraw: false
+
+    xAxis:
+      events:
+        afterSetExtremes: loadData
+      minRange: 3600 * 1000

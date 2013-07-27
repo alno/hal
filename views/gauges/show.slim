@@ -2,4 +2,4 @@
 .seven.columns.centered
   h2= @gauge.name
 
-  #gauge_chart style="height: 400px; min-width: 600px" data-title=@gauge.name data-values=@gauge.values_as_json
+  #gauge_chart style="height: 400px; min-width: 600px" data-title=@gauge.name data-values=@gauge.values_as_json data-url=to("/gauges/#{@gauge.id}/data")
