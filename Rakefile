@@ -15,6 +15,14 @@ end
 
 namespace :gauges do
 
+  task :cleanup do
+    require 'database'
+
+    [:gauge_values, :gauge_value_hours, :gauge_value_days].each do |table|
+      DB[table].where("time < '2001-01-01'").delete
+    end
+  end
+
   desc "Build missing gauge aggregations"
   task :aggregate do
     require 'database'
