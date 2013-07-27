@@ -69,5 +69,5 @@ end
 get '/gauges/:id/data' do |id|
   @gauge = Gauge.find(id) or halt 404
 
-  json @gauge.values_as_json
+  json @gauge.values_as_json(params[:from] && Time.at(params[:from].to_i / 1000), params[:to] && Time.at(params[:to].to_i / 1000))
 end

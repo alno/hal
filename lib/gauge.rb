@@ -24,9 +24,9 @@ Gauge = Struct.new :id, :index, :name, :source do
   def values_table(from = nil, to = nil)
     if from.nil? || to.nil?
       :gauge_value_hours
-    elsif to.to_i - from.to_i < 10 * 24 * 60 * 1000 # Less than 10 days - by minute
+    elsif to.to_i - from.to_i < 10 * 24 * 60 * 60 # Less than 10 days - by minute
       :gauge_values
-    elsif to.to_i - from.to_i < 600 * 24 * 60 * 1000 # Less than 600 days - by hour
+    elsif to.to_i - from.to_i < 600 * 24 * 60 * 60  # Less than 600 days - by hour
       :gauge_value_hours
     else
       :gauge_value_days
