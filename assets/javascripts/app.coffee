@@ -17,8 +17,17 @@ $('#gauge_chart').each ->
     chart.showLoading('Loading data from server...')
 
     $.getJSON "#{container.data('url')}?from=#{Math.round(e.min)}&to=#{Math.round(e.max)}", (data) ->
-      chart.series[0].setData(data)
+      for serieData, i in data
+        chart.series[i].setData(serieData)
       chart.hideLoading()
+
+  seriesConfig = for serie in container.data('series')
+    name: serie.name
+    data: serie.data
+    type: 'spline'
+    tooltip:
+      valueDecimals: 2
+
 
   container.highcharts 'StockChart',
 
@@ -52,21 +61,14 @@ $('#gauge_chart').each ->
     title:
       text: container.data('title')
 
-    series: [{
-      name: container.data('title'),
-      data: container.data('values'),
-      type: 'spline',
-      tooltip:
-        valueDecimals: 2
-    }]
+    series: seriesConfig
 
-    chart:
-      zoomType: 'x'
+    plotOptions:
+      series:
+        compare: 'percent'
 
     navigator:
       adaptToUpdatedData: false
-      series:
-        data: container.data('values')
 
     scrollbar:
       liveRedraw: false

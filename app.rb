@@ -59,6 +59,13 @@ get '/records/:id/files/*path' do |id, path|
   "There should be NGINX camera records handler"
 end
 
+get '/gauges' do
+  @section = :gauges
+  @gauges = Gauge.all
+
+  slim :'gauges/index'
+end
+
 get '/gauges/:id' do |id|
   @section = :gauges
   @gauge = Gauge.find(id) or halt 404
@@ -66,8 +73,8 @@ get '/gauges/:id' do |id|
   slim :'gauges/show'
 end
 
-get '/gauges/:id/data' do |id|
-  @gauge = Gauge.find(id) or halt 404
+get '/gauges/:ids/data' do |ids|
+  @gauges = ids.split(' ').map{ |id| Gauge.find(id) } or halt 404
 
-  json @gauge.values_as_json(params[:from] && Time.at(params[:from].to_i / 1000), params[:to] && Time.at(params[:to].to_i / 1000))
+  json @gauges.map{|g| g.values_as_json(params[:from] && Time.at(params[:from].to_i / 1000), params[:to] && Time.at(params[:to].to_i / 1000)) }
 end
