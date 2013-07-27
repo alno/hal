@@ -22,3 +22,7 @@
 every 1.day, :at => '03:00' do
   rake "records:cleanup"
 end
+
+every 1.hour, :at => 5 do
+  rake "records:cleanup"
+end
