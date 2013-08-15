@@ -63,10 +63,6 @@ $('#gauge_chart').each ->
 
     series: seriesConfig
 
-    plotOptions:
-      series:
-        compare: 'percent'
-
     navigator:
       adaptToUpdatedData: false
 
