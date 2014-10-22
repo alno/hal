@@ -10,7 +10,7 @@ gem 'pg'
 gem 'rake'
 gem 'slim'
 
-gem 'unicorn'
+gem 'puma'
 gem 'whenever'
 gem 'onewire'
 
