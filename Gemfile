@@ -21,3 +21,7 @@ gem 'zurb-foundation'
 group :development do
   gem 'therubyracer'
 end
+
+group :development, :spec do
+  gem 'rspec'
+end
