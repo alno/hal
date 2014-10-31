@@ -1,21 +1,6 @@
-require 'config'
 require 'database'
 
-Gauge = Struct.new :id, :index, :name, :source do
-
-  def self.all
-    @gauges ||= APP_CONFIG['gauges'].map { |id, data|
-      self.new id, data['index'], data['name'], data['source']
-    }
-  end
-
-  def self.each(&block)
-    all.each(&block)
-  end
-
-  def self.find(id)
-    all.find { |g| g.id == id }
-  end
+class History < Struct.new(:index)
 
   def update(val)
     DB[:gauge_values].insert gauge: index, time: Time.now, value: val

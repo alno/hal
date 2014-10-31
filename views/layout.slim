@@ -34,7 +34,7 @@ html
           li.has-dropdown
             a{ class=(@section == :gauges ? 'active' : '') href=to('/gauges') } Gauges
             ul.dropdown
-              - Gauge.each do |g|
+              - SYSTEM.children.each do |_, g|
                 li
                   a{ href=to("/gauges/#{g.id}") }= g.name
 

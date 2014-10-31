@@ -9,7 +9,7 @@ require 'database'
 require 'config'
 require 'camera'
 require 'record'
-require 'gauge'
+require 'system'
 
 Sinatra.register Sinatra::Sprockets
 
@@ -61,20 +61,20 @@ end
 
 get '/gauges' do
   @section = :gauges
-  @gauges = Gauge.all
+  @devices = SYSTEM.children.values
 
   slim :'gauges/index'
 end
 
 get '/gauges/:id' do |id|
   @section = :gauges
-  @gauge = Gauge.find(id) or halt 404
+  @device = SYSTEM.children[id] or halt 404
 
   slim :'gauges/show'
 end
 
 get '/gauges/:ids/data' do |ids|
-  @gauges = ids.split(' ').map{ |id| Gauge.find(id) } or halt 404
+  hists = ids.split(' ').map{ |id| SYSTEM.children[id].history } or halt 404
 
-  json @gauges.map{|g| g.values_as_json(params[:from] && Time.at(params[:from].to_i / 1000), params[:to] && Time.at(params[:to].to_i / 1000)) }
+  json hists.map{|h| h.values_as_json(params[:from] && Time.at(params[:from].to_i / 1000), params[:to] && Time.at(params[:to].to_i / 1000)) }
 end
