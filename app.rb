@@ -59,22 +59,27 @@ get '/records/:id/files/*path' do |id, path|
   "There should be NGINX camera records handler"
 end
 
+DEVICE_VIEWS = {
+  OnewireGauge => :'devices/gauge',
+  Hal::Group => :'devices/group'
+}
+
 get '/devices' do
   @section = :devices
-  @devices = SYSTEM.children.values
+  @device = SYSTEM
 
-  slim :'devices/index'
+  slim DEVICE_VIEWS[@device.class]
 end
 
-get '/devices/:id' do |id|
+get '/devices/*/history' do |ids|
+  hists = ids.split('+').map{ |id| SYSTEM.find(id).history } or halt 404
+
+  json hists.map{|h| h.values_as_json(params[:from] && Time.at(params[:from].to_i / 1000), params[:to] && Time.at(params[:to].to_i / 1000)) }
+end
+
+get '/devices/*' do |id|
   @section = :devices
   @device = SYSTEM.find(id) or halt 404
 
-  slim :'devices/show'
-end
-
-get '/devices/:ids/history' do |ids|
-  hists = ids.split(' ').map{ |id| SYSTEM.find(id).history } or halt 404
-
-  json hists.map{|h| h.values_as_json(params[:from] && Time.at(params[:from].to_i / 1000), params[:to] && Time.at(params[:to].to_i / 1000)) }
+  slim DEVICE_VIEWS[@device.class]
 end
