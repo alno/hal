@@ -1,0 +1,5 @@
+
+.seven.columns.centered
+  h2= @device.name
+
+  #gauge_chart style="height: 400px; min-width: 600px" data-title=@device.name data-series=MultiJson.encode([{name: @device.name, data: @device.history.values_as_json}]) data-url=to("/devices/#{@device.id}/history")

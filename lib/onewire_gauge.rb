@@ -17,6 +17,10 @@ class OnewireGauge
     @thread.terminate
   end
 
+  def path
+    id
+  end
+
   private
 
   def run

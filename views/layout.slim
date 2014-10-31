@@ -32,11 +32,11 @@ html
 
           li.divider
           li.has-dropdown
-            a{ class=(@section == :gauges ? 'active' : '') href=to('/gauges') } Gauges
+            a{ class=(@section == :devices ? 'active' : '') href=to('/devices') } Gauges
             ul.dropdown
               - SYSTEM.children.each do |_, g|
                 li
-                  a{ href=to("/gauges/#{g.id}") }= g.name
+                  a{ href=to("/devices/#{g.id}") }= g.name
 
           li.divider
 

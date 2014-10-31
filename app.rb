@@ -59,22 +59,22 @@ get '/records/:id/files/*path' do |id, path|
   "There should be NGINX camera records handler"
 end
 
-get '/gauges' do
-  @section = :gauges
+get '/devices' do
+  @section = :devices
   @devices = SYSTEM.children.values
 
-  slim :'gauges/index'
+  slim :'devices/index'
 end
 
-get '/gauges/:id' do |id|
-  @section = :gauges
-  @device = SYSTEM.children[id] or halt 404
+get '/devices/:id' do |id|
+  @section = :devices
+  @device = SYSTEM.find(id) or halt 404
 
-  slim :'gauges/show'
+  slim :'devices/show'
 end
 
-get '/gauges/:ids/data' do |ids|
-  hists = ids.split(' ').map{ |id| SYSTEM.children[id].history } or halt 404
+get '/devices/:ids/history' do |ids|
+  hists = ids.split(' ').map{ |id| SYSTEM.find(id).history } or halt 404
 
   json hists.map{|h| h.values_as_json(params[:from] && Time.at(params[:from].to_i / 1000), params[:to] && Time.at(params[:to].to_i / 1000)) }
 end

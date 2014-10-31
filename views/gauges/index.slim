@@ -1,6 +1,0 @@
-
-.seven.columns.centered
-  h2 Gauges
-
-  #gauge_chart style="height: 400px; min-width: 600px" data-series=MultiJson.encode(@devices.map{|g| {name: g.name, data: g.history.values_as_json} }) data-title="Gauges" data-url=to("/gauges/#{@devices.map(&:id).join('+')}/data")
-

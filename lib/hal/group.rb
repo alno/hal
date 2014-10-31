@@ -13,6 +13,10 @@ module Hal
       end
     end
 
+    def find(key)
+      key.split('/').inject(self) { |c, name| c.children[name] }
+    end
+
     private
 
     def create_child(name, child_class, *child_args)
