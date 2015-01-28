@@ -1,1 +1,2 @@
-== slim :'devices/gauge_set'
+- if (gauges = @node.descendants_by_paths(@path).select{ |_,g| g.is_a? OnewireGauge })
+  == slim :'devices/gauge_set', locals: { gauges: gauges }

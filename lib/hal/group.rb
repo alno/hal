@@ -32,6 +32,15 @@ module Hal
       end
     end
 
+    def descendants_by_paths(prefix = nil)
+      Hash.new.tap do |h|
+        each_descendant_with_path do |desc, path|
+          abspath = prefix ? "#{prefix}/#{path}" : path
+          h[abspath] = desc
+        end
+      end
+    end
+
     private
 
     def create_child(name, child_class, *child_args, &block)

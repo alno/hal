@@ -76,7 +76,7 @@ end
 get '/devices' do
   @section = :devices
 
-  @path = ''
+  @path = nil
   @node = SYSTEM
 
   slim DEVICE_VIEWS[@node.class]
