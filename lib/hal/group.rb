@@ -1,9 +1,10 @@
 module Hal
   class Group
 
-    attr_reader :children
+    attr_reader :name, :children
 
-    def initialize(&block)
+    def initialize(name, &block)
+      @name = name
       @children = {}
       instance_eval(&block) if block_given?
     end

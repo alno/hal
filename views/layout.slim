@@ -5,17 +5,14 @@ html
     == stylesheet_link_tag :app
   body
     nav.top-bar
-      ul.title-area
-        li.name
-          h1
-            a{ href=to('/') } HAL
-        li.toggle-topbar
-          a href="#"
-
-      - descendants = SYSTEM.descendants_by_paths
-
       section.top-bar-section
+        - descendants = SYSTEM.descendants_by_paths
+
         ul.left
+          li.has-dropdown
+            a.name{ href=to('/') }= SYSTEM.name
+            == slim :'shared/menu', locals: { prefix: '/', nodes: SYSTEM.children }
+
           li.divider
           li.has-dropdown
             a{ class=(@section == :cameras ? 'active' : '') href=to('/cameras') } Cameras
@@ -39,11 +36,6 @@ html
               - descendants.select{ |_, d| d.is_a? OnewireGauge }.each do |path, g|
                 li
                   a{ href=to(path) }= g.name
-
-          li.divider
-          li.has-dropdown
-            a{ class=(@section == :devices ? 'active' : '') href=to('/') } All
-            == slim :'shared/menu', locals: { prefix: '/', nodes: SYSTEM.children }
 
           li.divider
 
