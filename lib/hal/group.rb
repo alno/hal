@@ -20,12 +20,12 @@ module Hal
 
     private
 
-    def create_child(name, child_class, *child_args)
+    def create_child(name, child_class, *child_args, &block)
       name = name.to_s
 
       raise StandardError, "Child #{name.inspect} already exists!" if @children[name]
 
-      @children[name] = child_class.new(*child_args)
+      @children[name] = child_class.new(*child_args, &block)
     end
 
   end

@@ -34,11 +34,17 @@ html
           li.has-dropdown
             a{ class=(@section == :devices ? 'active' : '') href=to('/devices') } Gauges
             ul.dropdown
-              - SYSTEM.children.each do |_, g|
+              - SYSTEM.children['home'].children.each do |_, g|
                 li
                   a{ href=to("/devices/#{g.id}") }= g.name
 
           li.divider
+          li.has-dropdown
+            a{ class=(@section == :devices ? 'active' : '') href=to('/devices') } Nodes
+            == slim :'shared/menu', locals: { prefix: '/devices', nodes: SYSTEM.children }
+
+          li.divider
+
 
     .row
       section role="main"

@@ -1,0 +1,7 @@
+ul.dropdown
+  - nodes.each do |id, node|
+    - has_children = node.respond_to?(:children) && !node.children.empty?
+    li{ class=(has_children ? 'has-dropdown': '') }
+      a{ href=to("#{prefix}/#{id}") }= (node.respond_to?(:name) ? node.name : id.to_s)
+      - if has_children
+        == slim :'shared/menu', locals: { prefix: "#{prefix}/#{id}", nodes: node.children }
