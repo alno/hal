@@ -16,7 +16,7 @@ $('#gauge_chart').each ->
     chart = container.highcharts()
     chart.showLoading('Loading data from server...')
 
-    $.getJSON "#{container.data('url')}?from=#{Math.round(e.min)}&to=#{Math.round(e.max)}", (data) ->
+    $.getJSON container.data('url'), from: Math.round(e.min), to: Math.round(e.max), nodes: (s.path for s in container.data('series')), (data) ->
       for serieData, i in data
         chart.series[i].setData(serieData)
       chart.hideLoading()

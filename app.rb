@@ -10,6 +10,7 @@ require 'config'
 require 'camera'
 require 'record'
 require 'system'
+require 'opath'
 
 Sinatra.register Sinatra::Sprockets
 
@@ -64,22 +65,36 @@ DEVICE_VIEWS = {
   Hal::Group => :'devices/group'
 }
 
+get '/history.json' do
+  puts params.inspect
+
+  @nodes = params[:nodes].map{ |p| SYSTEM.find(p) }
+
+  json @nodes.map{ |n| n.history.values_as_json(params[:from] && Time.at(params[:from].to_i / 1000), params[:to] && Time.at(params[:to].to_i / 1000)) }
+end
+
 get '/devices' do
   @section = :devices
-  @device = SYSTEM
 
-  slim DEVICE_VIEWS[@device.class]
+  @path = ''
+  @node = SYSTEM
+
+  slim DEVICE_VIEWS[@node.class]
 end
 
-get '/devices/*/history' do |ids|
-  hists = ids.split('+').map{ |id| SYSTEM.find(id).history } or halt 404
-
-  json hists.map{|h| h.values_as_json(params[:from] && Time.at(params[:from].to_i / 1000), params[:to] && Time.at(params[:to].to_i / 1000)) }
-end
-
-get '/devices/*' do |id|
+get '/devices/*' do |path|
   @section = :devices
-  @device = SYSTEM.find(id) or halt 404
 
-  slim DEVICE_VIEWS[@device.class]
+  @path = path
+  @node = SYSTEM.find(path) or halt 404
+
+  slim DEVICE_VIEWS[@node.class]
+end
+
+post '/light/on' do
+  `owwrite /12.34D533000000/PIO.A 1`
+end
+
+post '/light/off' do
+  `owwrite /12.34D533000000/PIO.A 0`
 end

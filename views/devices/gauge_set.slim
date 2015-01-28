@@ -1,0 +1,11 @@
+
+.seven.columns.centered
+  h3 Gauges
+
+  - gauge_datas = []
+  - @node.each_descendant_with_path do |child, path|
+    - if child.respond_to? :history
+      - gauge_datas << {name: child.name, path: (@path.empty? ? path : "#{@path}/#{path}"), data: child.history.values_as_json}
+
+  #gauge_chart style="height: 400px; min-width: 600px" data-series=MultiJson.encode(gauge_datas) data-title="Gauges" data-url=to("/history.json")
+
