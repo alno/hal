@@ -3,8 +3,9 @@ module Hal
 
     attr_reader :children
 
-    def initialize
+    def initialize(&block)
       @children = {}
+      instance_eval(&block) if block_given?
     end
 
     def terminate
@@ -20,6 +21,8 @@ module Hal
     private
 
     def create_child(name, child_class, *child_args)
+      name = name.to_s
+
       raise StandardError, "Child #{name.inspect} already exists!" if @children[name]
 
       @children[name] = child_class.new(*child_args)
