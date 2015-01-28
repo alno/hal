@@ -1,0 +1,9 @@
+.seven.columns.centered
+  h3
+    a href=to("#{@path}/cameras") Cameras
+
+  ul.small-block-grid-4
+    - cameras.each do |path, camera|
+      li
+        a.th.radius href=to("#{path}")
+          img src=camera.stream_url

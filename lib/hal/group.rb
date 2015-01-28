@@ -15,11 +15,13 @@ module Hal
     end
 
     def find(path)
-      if path.empty?
-        self
-      else
-        path.split('/').inject(self) { |c, name| c.children[name] }
-      end
+      return self if path.nil?
+
+      path = path[1..-1] if path.start_with? '/'
+
+      return self if path.empty?
+
+      path.split('/').inject(self) { |c, name| c.children[name] }
     end
 
     def each_descendant_with_path(prefix = nil, &block)

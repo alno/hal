@@ -10,6 +10,10 @@ class Record < Sequel::Model
     order{ video__time.desc }
   )
 
+  def self.for_cameras(cameras)
+    where(:thumb__camera => cameras.map(&:index), :video__camera => cameras.map(&:index))
+  end
+
   def video_url
     file_url video_path
   end

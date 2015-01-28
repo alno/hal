@@ -1,6 +1,7 @@
+- cameras = @node.is_a?(Camera) ? [[@path, @node]] : @node.descendants_by_paths(@path).select{ |_, d| d.is_a? Camera }
 
 .section-container.accordion data-section='accordion'
-  - @records.chunk{ |rec| time_for(rec.time).to_date }.each do |date, records|
+  - Record.for_cameras(cameras.map(&:last)).chunk{ |rec| time_for(rec.time).to_date }.each do |date, records|
     section.section
       p.title
         a href="#"
@@ -17,4 +18,3 @@
                 img src=rec.thumb_url
 
                 = rec.time.strftime('%Y-%m-%d %H:%M')
-

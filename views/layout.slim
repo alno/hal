@@ -12,39 +12,40 @@ html
         li.toggle-topbar
           a href="#"
 
+      - descendants = SYSTEM.descendants_by_paths
+
       section.top-bar-section
         ul.left
           li.divider
           li.has-dropdown
             a{ class=(@section == :cameras ? 'active' : '') href=to('/cameras') } Cameras
             ul.dropdown
-              - Camera.each do |cam|
+              - descendants.select{ |_, d| d.is_a? Camera }.each do |path, cam|
                 li
-                  a{ href=to("/cameras/#{cam.id}") }= cam.name
+                  a{ href=to(path) }= cam.name
 
           li.divider
           li.has-dropdown
             a{ class=(@section == :records ? 'active' : '') href=to('/records') } Records
             ul.dropdown
-              - Camera.each do |cam|
+              - descendants.select{ |_, d| d.is_a? Camera }.each do |path, cam|
                 li
-                  a{ href=to("/records/#{cam.id}") }= cam.name
+                  a{ href=to("#{path}/records") }= cam.name
 
           li.divider
           li.has-dropdown
-            a{ class=(@section == :devices ? 'active' : '') href=to('/devices') } Gauges
+            a{ class=(@section == :devices ? 'active' : '') href=to('/') } Gauges
             ul.dropdown
-              - SYSTEM.children['home'].children.each do |_, g|
+              - descendants.select{ |_, d| d.is_a? OnewireGauge }.each do |path, g|
                 li
-                  a{ href=to("/devices/#{g.id}") }= g.name
+                  a{ href=to(path) }= g.name
 
           li.divider
           li.has-dropdown
-            a{ class=(@section == :devices ? 'active' : '') href=to('/devices') } Nodes
-            == slim :'shared/menu', locals: { prefix: '/devices', nodes: SYSTEM.children }
+            a{ class=(@section == :devices ? 'active' : '') href=to('/') } All
+            == slim :'shared/menu', locals: { prefix: '/', nodes: SYSTEM.children }
 
           li.divider
-
 
     .row
       section role="main"
