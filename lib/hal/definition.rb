@@ -21,5 +21,21 @@ module Hal
     def initialize(root)
       @root = root
     end
+
+    def controllers
+      @controllers ||= collect_controllers(@root)
+    end
+
+    private
+
+    def collect_controllers(node)
+      controllers = node.controllers.map{ |c, o| [node.path, c, o] }
+
+      node.children.each_value do |c|
+        controllers += collect_controllers(c)
+      end
+
+      controllers
+    end
   end
 end
