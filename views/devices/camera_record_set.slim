@@ -1,9 +1,9 @@
 .seven.columns.centered
   h3
-    a{ href=to("#{@path}/records") } Last records
+    a{ href=to("#{@path}/:records") } Last records
 
   ul.small-block-grid-4
-    - Record.for_cameras(cameras.map(&:last)).limit(4).each do |rec|
+    - Hal::View::Camera.records(cameras.values).limit(4).each do |rec|
       li
         .reveal-modal.tiny id="video_#{rec.camera}_#{rec.event}" style="text-align: center;"
           video controls="true" preload="none" width="640" height="480" poster=rec.thumb_url

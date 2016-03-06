@@ -1,8 +1,8 @@
 - descendants = @node.descendants_by_paths(@path)
 
-- if (cameras = descendants.select{ |_, d| d.is_a? Camera })
+- unless (cameras = descendants.select{ |_, d| d.type == :camera }).empty?
   == slim :'devices/camera_set', locals: { cameras: cameras }
   == slim :'devices/camera_record_set', locals: { cameras: cameras }
 
-- if (gauges = descendants.select{ |_, d| d.is_a? OnewireGauge })
+- unless (gauges = descendants.select{ |_, d| d.type == :gauge }).empty?
   == slim :'devices/gauge_set', locals: { gauges: gauges }

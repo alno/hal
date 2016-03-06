@@ -5,7 +5,7 @@ Sequel.migration do
       column :id, 'bigserial', :primary_key => true
       column :event, 'text'
 
-      column :camera, 'integer', :null => false
+      column :camera, 'int', :null => false
 
       column :frame, 'integer'
 

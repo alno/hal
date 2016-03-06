@@ -1,1 +1,1 @@
-== slim :'devices/camera_set', locals: { cameras: @node.descendants_by_paths(@path).select{ |_, d| d.is_a? Camera } }
+== slim :'devices/camera_set', locals: { cameras: @node.descendants_by_paths(@path).select{ |_, d| d.type == :camera } }

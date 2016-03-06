@@ -1,6 +1,6 @@
 .seven.columns.centered
-  h2= @node.name
+  h2= @node.title
 
   img src=@node.stream_url
 
-== slim :'devices/camera_record_set', locals: { cameras: [[@path, @node]] }
+== slim :'devices/camera_record_set', locals: { cameras: {@path => @node} }

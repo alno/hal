@@ -1,7 +1,9 @@
 ul.dropdown
-  - nodes.each do |id, node|
-    - has_children = node.respond_to?(:children) && !node.children.empty?
+  - nodes.each do |name, node|
+    - has_children = !node.children.empty?
+    - path = Hal::Util.join(prefix, name)
+
     li{ class=(has_children ? 'has-dropdown': '') }
-      a{ href=to("#{prefix}/#{id}") }= (node.respond_to?(:name) ? node.name : id.to_s)
+      a{ href=to(path) }= node.title
       - if has_children
-        == slim :'shared/menu', locals: { prefix: "#{prefix}/#{id}", nodes: node.children }
+        == slim :'shared/menu', locals: { prefix: path, nodes: node.children }

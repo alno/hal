@@ -2,7 +2,7 @@ Sequel.migration do
 
   change do
     create_table :gauge_value_hours do
-      column :gauge, 'integer', null: false
+      column :gauge, 'text', null: false
       column :time, 'timestamp', null: false
 
       column :value, 'real', null: false
@@ -11,7 +11,7 @@ Sequel.migration do
     end
 
     create_table :gauge_value_days do
-      column :gauge, 'integer', null: false
+      column :gauge, 'text', null: false
       column :time, 'timestamp', null: false
 
       column :value, 'real', null: false

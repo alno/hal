@@ -6,36 +6,36 @@ html
   body
     nav.top-bar
       section.top-bar-section
-        - descendants = SYSTEM.descendants_by_paths
+        - descendants = VIEW.descendants_by_paths
 
         ul.left
           li.has-dropdown
-            a.name{ href=to('/') }= SYSTEM.name
-            == slim :'shared/menu', locals: { prefix: '/', nodes: SYSTEM.children }
+            a.name{ href=to('/') } HAL
+            == slim :'shared/menu', locals: { prefix: '', nodes: VIEW.children }
 
           li.divider
           li.has-dropdown
-            a{ class=(@section == :cameras ? 'active' : '') href=to('/cameras') } Cameras
+            a{ href=to('/:cameras') } Cameras
             ul.dropdown
-              - descendants.select{ |_, d| d.is_a? Camera }.each do |path, cam|
+              - descendants.select{ |_, d| d.type == :camera }.each do |path, cam|
                 li
-                  a{ href=to(path) }= cam.name
+                  a{ href=to(path) }= cam.title
 
           li.divider
           li.has-dropdown
-            a{ class=(@section == :records ? 'active' : '') href=to('/records') } Records
+            a{ href=to('/:records') } Records
             ul.dropdown
-              - descendants.select{ |_, d| d.is_a? Camera }.each do |path, cam|
+              - descendants.select{ |_, d| d.type == :camera }.each do |path, cam|
                 li
-                  a{ href=to("#{path}/records") }= cam.name
+                  a{ href=to("#{path}/:records") }= cam.title
 
           li.divider
           li.has-dropdown
-            a{ class=(@section == :devices ? 'active' : '') href=to('/') } Gauges
+            a{ href=to('/temperature') } Temperature
             ul.dropdown
-              - descendants.select{ |_, d| d.is_a? OnewireGauge }.each do |path, g|
+              - descendants.select{ |_, d| d.type == :gauge }.each do |path, g|
                 li
-                  a{ href=to(path) }= g.name
+                  a{ href=to(path) }= g.title
 
           li.divider
 

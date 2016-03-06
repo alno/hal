@@ -1,7 +1,7 @@
-- cameras = @node.is_a?(Camera) ? [[@path, @node]] : @node.descendants_by_paths(@path).select{ |_, d| d.is_a? Camera }
+- cameras = @node.type == :camera ? {@path => @node} : @node.descendants_by_paths(@path).select{ |_, d| d.type == :camera }
 
 .section-container.accordion data-section='accordion'
-  - Record.for_cameras(cameras.map(&:last)).chunk{ |rec| time_for(rec.time).to_date }.each do |date, records|
+  - Hal::View::Camera.records(cameras.values).chunk{ |rec| time_for(rec.time).to_date }.each do |date, records|
     section.section
       p.title
         a href="#"

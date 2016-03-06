@@ -17,7 +17,7 @@ GEM
     libv8 (3.16.14.7)
     multi_json (1.10.1)
     onewire (0.0.1)
-    pg (0.14.1)
+    pg (0.18.4)
     puma (2.9.1)
       rack (>= 1.1, < 2.0)
     rack (1.5.2)
