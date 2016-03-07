@@ -7,7 +7,7 @@ class Hal::Controller::OnewireGauge < Hal::Controller::Base
     @thread = Thread.new { run }
   end
 
-  def terminate
+  def stop
     @thread.terminate
     @thread = nil
     @client = nil
