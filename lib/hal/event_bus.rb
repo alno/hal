@@ -5,6 +5,8 @@ class Hal::EventBus
   end
 
   def publish(topic, event)
+    puts "Publishing #{event.inspect} in #{topic.inspect} topic"
+
     @subscriptions[topic].each{ |s| s.call(event) }
   end
 
