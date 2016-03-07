@@ -10,10 +10,11 @@ require 'config'
 require 'hal'
 
 DEFINITION = Hal.load_definition('config/system.rb')
-VIEW = Hal::View.create(DEFINITION.root['home']['room'])
 
 runtime = Hal::Runtime.new(DEFINITION)
 runtime.start
+
+VIEW = Hal::View.create(runtime.bus, DEFINITION.root['home']['room'])
 
 NODE_TYPE_VIEWS = {
   :gauge  => :'devices/gauge',
@@ -34,14 +35,6 @@ get '/history.json' do
   json @nodes.map{ |n| n.values_as_json(params[:from] && Time.at(params[:from].to_i / 1000), params[:to] && Time.at(params[:to].to_i / 1000)) }
 end
 
-post '/light/on' do
-  `owwrite /12.34D533000000/PIO.A 1`
-end
-
-post '/light/off' do
-  `owwrite /12.34D533000000/PIO.A 0`
-end
-
 def normalize_path(path)
   path ||= ''
 
@@ -50,6 +43,16 @@ def normalize_path(path)
   end
 
   path
+end
+
+# Sending commands to items
+post '*/commands' do |path|
+  @path = normalize_path path
+  @node = VIEW.find(@path) or halt 404
+
+  @node.send_command(request.body.read)
+
+  ''
 end
 
 # Custom dashboard routes

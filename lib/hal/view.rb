@@ -5,10 +5,10 @@ module Hal::View
   autoload :Switch, 'hal/view/switch'
   autoload :Camera, 'hal/view/camera'
 
-  def self.create(node, path = '')
-    children = node.children.map{ |k, v| [k, create(v, Hal::Util.join(path, k))] }
+  def self.create(bus, node, path = '')
+    children = node.children.map{ |k, v| [k, create(bus, v, Hal::Util.join(path, k))] }
 
     view_class = const_get(Hal::Util.camelize(node.type).to_sym)
-    view_class.new(node, path, Hash[children])
+    view_class.new(bus, node, path, Hash[children])
   end
 end

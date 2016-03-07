@@ -1,10 +1,15 @@
 class Hal::View::Base
-  attr_reader :node, :children
+  attr_reader :bus, :node, :children
 
-  def initialize(node, path, children)
+  def initialize(bus, node, path, children)
+    @bus = bus
     @node = node
     @path = path
     @children = children
+  end
+
+  def send_command(cmd)
+    bus.publish(Hal::Util.join(node.path, 'commands'), cmd)
   end
 
   def type
