@@ -26,6 +26,8 @@ class Hal::Controller::OnewireGauge < Hal::Controller::Base
     puts "Updating gauge #{options[:path].inspect} in #{Time.now}"
 
     bus.publish node.path, @client.read(options[:path])
+  rescue => e
+    puts "Error updating: #{e.message}"
   end
 
 end
