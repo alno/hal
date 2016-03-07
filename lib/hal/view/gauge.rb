@@ -3,8 +3,9 @@ require 'database'
 class Hal::View::Gauge < Hal::View::Base
 
   def values(from = nil, to = nil)
-    from ||= DB[:gauge_values].min(:time)
-    to   ||= DB[:gauge_values].max(:time)
+    from ||= DB[:gauge_values].where('gauge = ?', node.path).min(:time)
+    to   ||= Time.now.to_i
+
     DB[values_table(from, to)].where('gauge = ? AND time BETWEEN ? AND ?', node.path, from, to)
   end
 
