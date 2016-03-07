@@ -12,7 +12,7 @@ class Hal::Persistor::Gauge < Hal::Persistor::Base
   private
 
   def update(val)
-    DB[:gauge_values].insert gauge: path, time: Time.now, value: val
+    DB[:gauge_values].insert gauge: node.path, time: Time.now, value: val
   end
 
 end
