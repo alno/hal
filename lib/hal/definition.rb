@@ -26,15 +26,29 @@ class Hal::Definition
     @controllers ||= collect_controllers(@root)
   end
 
+  def persistors
+    @persistors ||= collect_persistors(@root)
+  end
+
   private
 
   def collect_controllers(node)
-    controllers = node.controllers.map{ |c, o| [node.path, c, o] }
+    controllers = node.controllers.map{ |c, o| [node, c, o] }
 
     node.children.each_value do |c|
       controllers += collect_controllers(c)
     end
 
     controllers
+  end
+
+  def collect_persistors(node)
+    persistors = [[node, nil, {}]]
+
+    node.children.each_value do |c|
+      persistors += collect_persistors(c)
+    end
+
+    persistors
   end
 end

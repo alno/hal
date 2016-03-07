@@ -7,12 +7,9 @@ module Hal
   autoload :EventBus, 'hal/event_bus'
 
   autoload :Controller, 'hal/controller'
-  autoload :OnewireGaugeController, 'hal/onewire_gauge_controller'
-
   autoload :Persistor, 'hal/persistor'
-  autoload :GaugePersistor, 'hal/gauge_persistor'
-  autoload :CameraPersistor, 'hal/gauge_persistor'
 
+  autoload :Runtime, 'hal/runtime'
   autoload :View, 'hal/view'
 
   def self.load_definition(file)

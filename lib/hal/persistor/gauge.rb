@@ -1,9 +1,9 @@
 require 'database'
 
-class Hal::GaugePersistor < Hal::Persistor
+class Hal::Persistor::Gauge < Hal::Persistor::Base
 
   def start
-    bus.subscribe path, method(:update)
+    bus.subscribe node.path, method(:update)
   end
 
   def stop

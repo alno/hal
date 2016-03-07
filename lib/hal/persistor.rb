@@ -1,16 +1,11 @@
-class Hal::Persistor
+module Hal::Persistor
+  autoload :Base, 'hal/persistor/base'
+  autoload :Gauge, 'hal/persistor/gauge'
 
-  attr_reader :bus, :path
-
-  def initialize(bus, path)
-    @bus = bus
-    @path = path
+  def self.resolve(type, persistor)
+    case type
+    when :gauge then Gauge
+    else nil
+    end
   end
-
-  def start
-  end
-
-  def stop
-  end
-
 end

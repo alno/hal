@@ -1,6 +1,6 @@
 require 'onewire'
 
-class Hal::OnewireGaugeController < Hal::Controller
+class Hal::Controller::OnewireGauge < Hal::Controller::Base
 
   def start
     @client = Onewire.client
@@ -25,7 +25,7 @@ class Hal::OnewireGaugeController < Hal::Controller
   def update
     puts "Updating gauge #{options[:path].inspect} in #{Time.now}"
 
-    bus.publish path, @client.read(options[:path])
+    bus.publish node.path, @client.read(options[:path])
   end
 
 end

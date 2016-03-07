@@ -9,8 +9,11 @@ require 'database'
 require 'config'
 require 'hal'
 
-SYSTEM = Hal.load_definition('config/system.rb')
-VIEW = Hal::View.create(SYSTEM.root['home']['room'])
+DEFINITION = Hal.load_definition('config/system.rb')
+VIEW = Hal::View.create(DEFINITION.root['home']['room'])
+
+runtime = Hal::Runtime.new(DEFINITION)
+runtime.start
 
 NODE_TYPE_VIEWS = {
   :gauge  => :'devices/gauge',
