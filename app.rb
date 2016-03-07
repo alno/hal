@@ -65,6 +65,14 @@ get '*::dashboard' do |path, dashboard|
 end
 
 # System tree routes
+get '*.json' do |path|
+  @path = normalize_path path
+  @node = VIEW.find(@path) or halt 404
+
+  json @node.as_json
+end
+
+# System tree routes
 get '*' do |path|
   @path = normalize_path path
   @node = VIEW.find(@path) or halt 404

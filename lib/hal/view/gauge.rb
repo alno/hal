@@ -13,7 +13,16 @@ class Hal::View::Gauge < Hal::View::Base
     values(from, to).select(:time, :value).map{|r| [r[:time].to_i * 1000, r[:value]]}
   end
 
+  def as_json
+    super.merge(last_known_state)
+  end
+
   private
+
+  # Get last known gauge value
+  def last_known_state
+    DB[:gauge_values].where('gauge = ?', node.path).select(:time, :value).order(:time).last
+  end
 
   def values_table(from = nil, to = nil)
     if from.nil? || to.nil?

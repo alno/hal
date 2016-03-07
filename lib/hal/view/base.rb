@@ -30,4 +30,8 @@ class Hal::View::Base
     end
   end
 
+  def as_json
+    { title: title }
+  end
+
 end
