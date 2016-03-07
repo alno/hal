@@ -4,5 +4,8 @@
   == slim :'devices/camera_set', locals: { cameras: cameras }
   == slim :'devices/camera_record_set', locals: { cameras: cameras }
 
+- unless (switches = descendants.select{ |_, d| d.type == :switch }).empty?
+  == slim :'devices/switch_set', locals: { switches: switches }
+
 - unless (gauges = descendants.select{ |_, d| d.type == :gauge }).empty?
   == slim :'devices/gauge_set', locals: { gauges: gauges }

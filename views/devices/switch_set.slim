@@ -1,0 +1,10 @@
+.seven.columns.centered
+  h3 Switches
+
+  ul
+    - switches.each do |path, switch|
+      h5
+        = switch.title
+        | &nbsp;
+        button onclick="$.post(#{MultiJson.encode(path + "/commands")}, '1')" ON
+        button onclick="$.post(#{MultiJson.encode(path + "/commands")}, '0')" OFF
