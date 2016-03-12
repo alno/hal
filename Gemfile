@@ -17,7 +17,6 @@ gem 'onewire'
 
 # Frontend
 gem 'coffee-script'
-gem 'zurb-foundation'
 
 group :development do
   gem 'therubyracer'

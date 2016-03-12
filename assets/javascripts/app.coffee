@@ -1,9 +1,4 @@
-#= require foundation/foundation
-#= require foundation/foundation.section
-#= require foundation/foundation.reveal
 #= require highstock
-
-$(document).foundation()
 
 Highcharts.setOptions
   global:
@@ -73,3 +68,7 @@ $('#gauge_chart').each ->
       events:
         afterSetExtremes: loadData
       minRange: 3600 * 1000
+
+$(->
+  $('.ui.accordion').accordion()
+)
