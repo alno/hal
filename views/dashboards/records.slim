@@ -1,20 +1,11 @@
 - cameras = @node.type == :camera ? {@path => @node} : @node.descendants_by_paths(@path).select{ |_, d| d.type == :camera }
 
-.section-container.accordion data-section='accordion'
+.ui.styled.accordion.fluid
   - Hal::View::Camera.records(cameras.values).chunk{ |rec| time_for(rec.time).to_date }.each do |date, records|
-    section.section
-      p.title
-        a href="#"
-          | #{date} (#{records.size} total)
-      .content
-        ul.small-block-grid-4
-          - records.each do |rec|
-            li
-              .reveal-modal id="video_#{rec.camera}_#{rec.event}" style="text-align: center;"
-                video controls="true" preload="none" width="640" height="480" poster=rec.thumb_url
-                  source src=rec.video_url type='video/ogg'
-
-              a.th.radius href='#' data-reveal-id="video_#{rec.camera}_#{rec.event}"
-                img src=rec.thumb_url
-
-                = rec.time.strftime('%Y-%m-%d %H:%M')
+    .title
+      i class="dropdown icon"
+      | #{date} (#{records.size} total)
+    .content
+      .ui.four.cards
+        - records.each do |rec|
+          == slim :'devices/camera_record', locals: { record: rec }

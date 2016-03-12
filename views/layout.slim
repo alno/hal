@@ -2,46 +2,28 @@ doctype html
 html
   head
     title HAL
+    link href='//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css' media='screen' rel='stylesheet' type='text/css'
     == stylesheet_link_tag :app
+
   body
-    nav.top-bar
-      section.top-bar-section
-        - descendants = VIEW.descendants_by_paths
+    .ui.top.menu.inverted.fixed
+      a.item href=to('/') HAL
+      a.item href=to('/:cameras')
+        i.video.camera.icon
+        | Cameras
+      a.item href=to('/:records')
+        i.video.play.icon
+        | Records
+      a.item href=to('/temperature') Temperature
 
-        ul.left
-          li.has-dropdown
-            a.name{ href=to('/') } HAL
-            == slim :'shared/menu', locals: { prefix: '', nodes: VIEW.children }
+      /
+        .ui.dropdown.item
+          Nodes
+          == slim :'shared/menu', locals: { prefix: '', nodes: VIEW.children }
 
-          li.divider
-          li.has-dropdown
-            a{ href=to('/:cameras') } Cameras
-            ul.dropdown
-              - descendants.select{ |_, d| d.type == :camera }.each do |path, cam|
-                li
-                  a{ href=to(path) }= cam.title
+    #main.ui.container
+      == yield
 
-          li.divider
-          li.has-dropdown
-            a{ href=to('/:records') } Records
-            ul.dropdown
-              - descendants.select{ |_, d| d.type == :camera }.each do |path, cam|
-                li
-                  a{ href=to("#{path}/:records") }= cam.title
-
-          li.divider
-          li.has-dropdown
-            a{ href=to('/temperature') } Temperature
-            ul.dropdown
-              - descendants.select{ |_, d| d.type == :gauge }.each do |path, g|
-                li
-                  a{ href=to(path) }= g.title
-
-          li.divider
-
-    .row
-      section role="main"
-        == yield
-
-    script src="//yandex.st/jquery/1.7.1/jquery.min.js"
+    script src='//yandex.st/jquery/1.7.1/jquery.min.js'
+    script src='//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js'
     == javascript_include_tag :app

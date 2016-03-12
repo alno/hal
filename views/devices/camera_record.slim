@@ -1,0 +1,11 @@
+.card
+  .ui.modal id="video_#{record.camera}_#{record.event}"
+    .content style="text-align: center;"
+      video controls="true" preload="none" width="640" height="480" poster=record.thumb_url
+        source src=record.video_url type='video/ogg'
+
+  a.image onclick="$('#video_#{record.camera}_#{record.event}').modal('show'); return false;"
+    img src=record.thumb_url
+
+  .content
+    = record.time.strftime('%Y-%m-%d %H:%M')

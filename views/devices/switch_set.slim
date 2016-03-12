@@ -1,10 +1,6 @@
-.seven.columns.centered
-  h3 Switches
+h2 Controls
 
-  ul
-    - switches.each do |path, switch|
-      h5
-        = switch.title
-        | &nbsp;
-        button onclick="$.post(#{MultiJson.encode(path + "/commands")}, '1')" ON
-        button onclick="$.post(#{MultiJson.encode(path + "/commands")}, '0')" OFF
+- switches.each do |path, switch|
+  .ui.slider.checkbox
+    input name="public" type="checkbox" onchange="$.post(#{MultiJson.encode(path + "/commands")}, this.checked ? '1' : '0')"
+    label= switch.title

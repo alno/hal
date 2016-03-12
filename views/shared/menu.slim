@@ -1,9 +1,10 @@
-ul.dropdown
+.menu
   - nodes.each do |name, node|
-    - has_children = !node.children.empty?
     - path = Hal::Util.join(prefix, name)
 
-    li{ class=(has_children ? 'has-dropdown': '') }
-      a{ href=to(path) }= node.title
-      - if has_children
+    - if node.children.empty?
+      a.item{ href=to(path) }=node.title
+    - else
+      .ui.dropdown.item
+        a{ href=to(path) }=node.title
         == slim :'shared/menu', locals: { prefix: path, nodes: node.children }
