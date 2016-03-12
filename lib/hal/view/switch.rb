@@ -12,6 +12,10 @@ class Hal::View::Switch < Hal::View::Base
     super.merge(last_known_state)
   end
 
+  def value
+    last_known_state[:value]
+  end
+
   private
 
   # Get last known gauge value

@@ -2,5 +2,5 @@ h2 Controls
 
 - switches.each do |path, switch|
   .ui.slider.checkbox
-    input name="public" type="checkbox" onchange="$.post(#{MultiJson.encode(path + "/commands")}, this.checked ? '1' : '0')"
+    input name="public" type="checkbox" checked=(switch.value.to_i == 1) onchange="$.post(#{MultiJson.encode(path + "/commands")}, this.checked ? '1' : '0')"
     label= switch.title
