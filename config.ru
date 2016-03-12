@@ -7,7 +7,7 @@ unless production?
   require './assets'
 
   map "/#{Sinatra::Sprockets.config.prefix}" do
-    run
+    run app_assets
   end
 end
 
