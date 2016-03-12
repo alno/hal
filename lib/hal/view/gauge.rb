@@ -25,7 +25,9 @@ class Hal::View::Gauge < Hal::View::Base
 
   # Get last known gauge value
   def last_known_state
-    DB[:gauge_values].where('gauge = ?', node.path).select(:time, :value).order(:time).last
+    s = DB[:gauge_values].where('gauge = ?', node.path).select(:time, :value).order(:time).last
+    s ||= {value: nil, time: Time.at(0)}
+    s
   end
 
   def values_table(from = nil, to = nil)
