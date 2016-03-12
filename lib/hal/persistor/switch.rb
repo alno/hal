@@ -12,7 +12,7 @@ class Hal::Persistor::Switch < Hal::Persistor::Base
   private
 
   def update(val)
-    DB[:state_changes].insert node: node.path, time: Time.now, value: val
+    DB[:state_changes].insert node: node.path, time: Time.now, value: MultiJson.encode(val)
   end
 
 end

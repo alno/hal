@@ -20,7 +20,9 @@ class Hal::View::Switch < Hal::View::Base
 
   # Get last known gauge value
   def last_known_state
-    DB[:state_changes].where('node = ?', node.path).select(:time, :value).order(:time).last
+    DB[:state_changes].where('node = ?', node.path).select(:time, :value).order(:time).last.tap do |h|
+      h[:value] = MultiJson.decode(h[:value])
+    end
   end
 
 end
