@@ -19,4 +19,8 @@ class Hal::View::Group < Hal::View::Base
     end
   end
 
+  def as_json
+    super.merge(children: children.keys)
+  end
+
 end
