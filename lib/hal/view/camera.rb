@@ -18,6 +18,10 @@ class Hal::View::Camera < Hal::View::Base
       file_url thumb_path
     end
 
+    def as_json
+      {time: time, video_url: video_url, thumb_url: thumb_url}
+    end
+
     private
 
     def file_url(path)
@@ -43,4 +47,12 @@ class Hal::View::Camera < Hal::View::Base
   def records
     self.class.records([self])
   end
+
+  def as_json
+    last_record = records.last
+    last_record_json = last_record && last_record.as_json
+
+    super.merge(stream_url: stream_url, last_record: last_record_json)
+  end
+
 end
