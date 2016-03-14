@@ -4,3 +4,6 @@ config/application.yml
 .sass-cache
 public/assets
 config/system.rb
+public/bundle.js
+public/bundle.js.map
+front/node_modules
