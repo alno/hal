@@ -14,5 +14,9 @@
   },
   "dependencies": {
     "highcharts": "^4.2.3"
+  },
+  "scripts": {
+    "watch": "webpack -d --watch",
+    "build": "webpack -p"
   }
 }

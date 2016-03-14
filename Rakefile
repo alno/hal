@@ -73,7 +73,7 @@ end
 namespace :assets do
 
   task :precompile do
-    # TODO
+    `cd front && npm install && npm run build`
   end
 
 end
