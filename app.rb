@@ -1,7 +1,6 @@
 
 require 'sinatra'
 require 'sinatra/reloader' if development?
-require 'sinatra/sprockets'
 require 'sinatra/json'
 require 'slim'
 
@@ -26,8 +25,6 @@ DASHBOARD_VIEWS = {
   'records' => :'dashboards/records',
   'cameras' => :'dashboards/cameras'
 }
-
-Sinatra.register Sinatra::Sprockets
 
 get '/history.json' do
   @nodes = params[:nodes].map{ |p| VIEW.find(normalize_path(p)) }
