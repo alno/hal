@@ -72,8 +72,16 @@ end
 
 namespace :assets do
 
-  task :precompile do
-    `cd front && npm install && npm run build`
+  task :install do
+    system('npm install', chdir: 'front')
+  end
+
+  task :precompile => :install do
+    system('npm run build', chdir: 'front')
+  end
+
+  task :watch => :install do
+    system('npm run watch', chdir: 'front')
   end
 
 end

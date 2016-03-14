@@ -14,6 +14,10 @@ gem 'puma'
 gem 'whenever'
 gem 'onewire'
 
+group :development do
+  gem 'foreman'
+end
+
 group :development, :spec do
   gem 'rspec'
 end
