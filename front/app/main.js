@@ -19,41 +19,25 @@ $(function() {
       return $.getJSON(container.data('url'), {
         from: Math.round(e.min),
         to: Math.round(e.max),
-        nodes: (function() {
-          var ref = container.data('series');
-          var results = [];
-          for (j = 0, len = ref.length; j < len; j++) {
-            var s = ref[j];
-            results.push(s.path);
-          }
-          return results;
-        })()
+        nodes: container.data('series').map(function(s) { return s.path; })
       }, function(data) {
-        var i;
-        for (i = j = 0, len = data.length; j < len; i = ++j) {
-          var serieData = data[i];
-          chart.series[i].setData(serieData);
-        }
+        for (var i = 0; i < data.length; ++i)
+          chart.series[i].setData(data[i]);
+
         return chart.hideLoading();
       });
     };
 
-    var seriesConfig = (function() {
-      var ref = container.data('series');
-      var results = [];
-      for (j = 0, len = ref.length; j < len; j++) {
-        var serie = ref[j];
-        results.push({
-          name: serie.name,
-          data: serie.data,
-          type: 'spline',
-          tooltip: {
-            valueDecimals: 2
-          }
-        });
-      }
-      return results;
-    })();
+    var seriesConfig = container.data('series').map(function(serie) {
+      return {
+        name: serie.name,
+        data: serie.data,
+        type: 'spline',
+        tooltip: {
+          valueDecimals: 2
+        }
+      };
+    });
 
     Highcharts.stockChart(this, {
       rangeSelector: {
