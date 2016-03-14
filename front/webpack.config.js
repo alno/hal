@@ -1,6 +1,8 @@
 var webpack = require('webpack');
 var path = require('path');
 
+var node_modules_dir = path.join(__dirname, 'node_modules');
+
 var config = {
   entry: path.resolve(__dirname, 'app/main.js'),
   output: {
@@ -11,7 +13,8 @@ var config = {
   module: {
     loaders: [{
       test: /\.jsx?/,
-      loader: 'babel'
+      loader: 'babel',
+      exclude: [node_modules_dir]
     }, {
       test:   /\.css$/,
       loader: 'style-loader!css-loader'

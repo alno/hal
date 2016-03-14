@@ -3,7 +3,10 @@ html
   head
     title HAL
     link href='//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css' media='screen' rel='stylesheet' type='text/css'
-    == stylesheet_link_tag :app
+
+    script src='//yandex.st/jquery/1.7.1/jquery.min.js'
+    script src='//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js'
+    script src='/bundle.js'
 
   body
     .ui.top.menu.inverted.fixed
@@ -23,7 +26,3 @@ html
 
     #main.ui.container
       == yield
-
-    script src='//yandex.st/jquery/1.7.1/jquery.min.js'
-    script src='//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js'
-    == javascript_include_tag :app
