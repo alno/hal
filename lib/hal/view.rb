@@ -4,6 +4,7 @@ module Hal::View
   autoload :Gauge, 'hal/view/gauge'
   autoload :Switch, 'hal/view/switch'
   autoload :Camera, 'hal/view/camera'
+  autoload :Contact, 'hal/view/contact'
 
   def self.create(bus, node, path = '')
     children = node.children.map{ |k, v| [k, create(bus, v, Hal::Util.join(path, k))] }
