@@ -23,7 +23,10 @@ class Hal::Controller::GpioContact < Hal::Controller::Base
   def update
     puts "Updating contact #{node.path} from #{options[:pin].inspect} in #{Time.now}"
 
-    if value = File.read("/sys/class/gpio/gpio#{options[:pin]}/value").to_i
+    value = File.read("/sys/class/gpio/gpio#{options[:pin]}/value").to_i
+    value = 1 - value if options[:invert]
+
+    if value
       if value == @value
         puts "Skipping the same value..."
       else
