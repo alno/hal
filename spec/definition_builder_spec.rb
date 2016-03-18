@@ -24,7 +24,7 @@ describe Hal::DefinitionBuilder do
   it "should build complex group" do
     node = subject.build_node :group, :bbb, 'aaa' do
 
-      gauge :fff do
+      gauge :fff, kk: 11 do
         controller :some_controller, path: 'aaaa'
       end
 
@@ -45,6 +45,7 @@ describe Hal::DefinitionBuilder do
     expect(node.children['fff'].type).to eq :gauge
     expect(node.children['fff'].path).to eq 'aaa/bbb/fff'
     expect(node.children['fff'].controllers).to eq [[:some_controller, {path: 'aaaa'}]]
+    expect(node.children['fff'].options).to eq(kk: 11)
 
     expect(node.children['gggg'].type).to eq :camera
     expect(node.children['gggg'].path).to eq 'aaa/bbb/gggg'

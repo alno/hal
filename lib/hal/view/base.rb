@@ -21,7 +21,7 @@ class Hal::View::Base
   end
 
   def title
-    @title ||= Hal::Util.camelize(name)
+    @title ||= node.options[:title] || Hal::Util.camelize(name)
   end
 
   def find(path)
