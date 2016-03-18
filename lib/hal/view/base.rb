@@ -1,4 +1,10 @@
+require 'forwardable'
+
 class Hal::View::Base
+  extend Forwardable
+
+  def_delegators :@node, :type, :name, :options
+
   attr_reader :bus, :node, :children
 
   def initialize(bus, node, path, children)
@@ -9,19 +15,11 @@ class Hal::View::Base
   end
 
   def send_command(cmd)
-    bus.publish(Hal::Util.join(node.path, 'commands'), cmd)
-  end
-
-  def type
-    node.type
-  end
-
-  def name
-    node.name
+    bus.publish(Hal::Util.join(path, 'commands'), cmd)
   end
 
   def title
-    @title ||= node.options[:title] || Hal::Util.camelize(name)
+    @title ||= options[:title] || Hal::Util.camelize(name)
   end
 
   def find(path)
