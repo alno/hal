@@ -30,7 +30,7 @@ $(function() {
 
     var seriesConfig = container.data('series').map(function(serie) {
       return {
-        name: serie.name,
+        name: serie.title,
         data: serie.data,
         type: 'spline',
         tooltip: {

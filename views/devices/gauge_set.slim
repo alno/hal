@@ -1,4 +1,4 @@
 h2 Gauges
 
-#gauge_chart style="height: 400px; min-width: 600px" data-title="Gauges" data-url=to("/history.json") data-series=MultiJson.encode(gauges.map{ |path, gauge| {name: gauge.name, path: path, data: gauge.values_as_json} })
+#gauge_chart style="height: 400px; min-width: 600px" data-title="Gauges" data-url=to("/history.json") data-series=MultiJson.encode(gauges.map{ |path, gauge| {title: gauge.title, path: path, data: gauge.values_as_json} })
 

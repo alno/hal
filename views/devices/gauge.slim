@@ -1,4 +1,4 @@
 .seven.columns.centered
   h2= @node.title
 
-  #gauge_chart style="height: 400px; min-width: 600px" data-title=@node.name data-url=to("/history.json") data-series=MultiJson.encode([{name: @node.name, path: @path, data: @node.values_as_json}])
+  #gauge_chart style="height: 400px; min-width: 600px" data-title=@node.title data-url=to("/history.json") data-series=MultiJson.encode([{title: @node.title, path: @path, data: @node.values_as_json}])
