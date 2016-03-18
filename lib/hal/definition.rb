@@ -1,11 +1,12 @@
 class Hal::Definition
   class Node
-    attr_reader :type, :name, :path, :controllers, :children
+    attr_reader :type, :name, :path, :controllers, :options, :children
 
-    def initialize(type, name, path, controllers, children)
+    def initialize(type, name, path, options, controllers, children)
       @type = type
       @name = name
       @path = path
+      @options = options
       @controllers = controllers
       @children = children
     end

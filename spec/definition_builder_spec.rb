@@ -3,15 +3,17 @@ require "spec_helper"
 describe Hal::DefinitionBuilder do
 
   it "should build empty gauge" do
-    node = subject.build_node :gauge, :fff, 'aaa', [[:some_controller_1, x: 11]]
+    node = subject.build_node :gauge, :fff, 'aaa', [:some_controller_1, x: 11], opt1: 111, aaa: 'bbb'
 
     expect(node.type).to eq :gauge
     expect(node.path).to eq 'aaa/fff'
     expect(node.controllers).to eq [[:some_controller_1, {x: 11}]]
+    expect(node.options).to eq(opt1: 111, aaa: 'bbb')
   end
 
-  it "should build empty group" do
-    node = subject.build_node :group, :bbb, '', [[:some_controller, aa: 'aaaa']] do
+  it "should build group with controller" do
+    node = subject.build_node :group, :bbb, '' do
+      controller :some_controller, aa: 'aaaa'
     end
 
     expect(node.type).to eq :group
@@ -20,10 +22,13 @@ describe Hal::DefinitionBuilder do
   end
 
   it "should build complex group" do
-    node = subject.build_node :group, :bbb, 'aaa', [] do
+    node = subject.build_node :group, :bbb, 'aaa' do
 
-      gauge :fff, :some_controller, path: 'aaaa'
-      camera :gggg, :camera_controller, index: 111
+      gauge :fff do
+        controller :some_controller, path: 'aaaa'
+      end
+
+      camera :gggg, [:camera_controller, index: 111], [:other_contr, a: 1, b: 'dd'], aaa: 'fbg', bb: 111
 
       group :ghj do
         switch :xxx
@@ -43,7 +48,8 @@ describe Hal::DefinitionBuilder do
 
     expect(node.children['gggg'].type).to eq :camera
     expect(node.children['gggg'].path).to eq 'aaa/bbb/gggg'
-    expect(node.children['gggg'].controllers).to eq [[:camera_controller, {index: 111}]]
+    expect(node.children['gggg'].controllers).to eq [[:camera_controller, {index: 111}], [:other_contr, a: 1, b: 'dd']]
+    expect(node.children['gggg'].options).to eq(aaa: 'fbg', bb: 111)
 
     expect(node.children['ghj'].type).to eq :group
     expect(node.children['ghj'].path).to eq 'aaa/bbb/ghj'
@@ -57,7 +63,9 @@ describe Hal::DefinitionBuilder do
   it "should build full def" do
     definition = subject.build do
 
-      gauge :fg, :some_controller, path: 'ggg', kk: 11
+      gauge :fg do
+        controller :some_controller, path: 'ggg', kk: 11
+      end
 
       group :xyz do
         camera :yyy
