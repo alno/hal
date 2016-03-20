@@ -2,26 +2,63 @@ require "spec_helper"
 
 describe Hal::DefinitionBuilder do
 
-  it "should build empty gauge" do
+  it "should build empty gauge with known controller" do
+    subject.controller_definitions[:some_controller_1] = ->(node_type, opts) { :some_controller_cls }
+
     node = subject.build_node :gauge, :fff, 'aaa', [:some_controller_1, x: 11], opt1: 111, aaa: 'bbb'
 
     expect(node.type).to eq :gauge
     expect(node.path).to eq 'aaa/fff'
-    expect(node.controllers).to eq [[:some_controller_1, {x: 11}]]
+    expect(node.controllers).to eq [[:some_controller_cls, {x: 11}]]
     expect(node.options).to eq(opt1: 111, aaa: 'bbb')
   end
 
-  it "should build group with controller" do
+  it "should build empty gauge with known controller with no opts" do
+    subject.controller_definitions[:some_controller_1] = ->(node_type, opts) { :some_controller_cls }
+
+    node = subject.build_node :gauge, :fff, 'aaa', :some_controller_1, opt1: 111, aaa: 'bbb'
+
+    expect(node.type).to eq :gauge
+    expect(node.path).to eq 'aaa/fff'
+    expect(node.controllers).to eq [[:some_controller_cls, {}]]
+    expect(node.options).to eq(opt1: 111, aaa: 'bbb')
+  end
+
+  it "should build group with known controller" do
+    subject.controller_definitions[:some_controller] = ->(node_type, opts) { :some_controller_cls }
+
     node = subject.build_node :group, :bbb, '' do
       controller :some_controller, aa: 'aaaa'
     end
 
     expect(node.type).to eq :group
     expect(node.path).to eq 'bbb'
-    expect(node.controllers).to eq [[:some_controller, {aa: 'aaaa'}]]
+    expect(node.controllers).to eq [[:some_controller_cls, {aa: 'aaaa'}]]
+  end
+
+  it "should build group with known controller with no opts" do
+    subject.controller_definitions[:some_controller] = ->(node_type, opts) { :some_controller_cls }
+
+    node = subject.build_node :group, :bbb, '' do
+      controller :some_controller
+    end
+
+    expect(node.type).to eq :group
+    expect(node.path).to eq 'bbb'
+    expect(node.controllers).to eq [[:some_controller_cls, {}]]
+  end
+
+  it "should fail on unknown controller" do
+    expect {
+      subject.build_node :group, :bbb, '', [:some_controller_1, x: 11]
+    }.to raise_error Hal::DefinitionBuilder::UnknownControllerError
   end
 
   it "should build complex group" do
+    subject.controller_definitions[:some_controller] = ->(node_type, opts) { :some_controller_cls }
+    subject.controller_definitions[:other_contr] = ->(node_type, opts) { :other_contr_cls }
+    subject.controller_definitions[:camera_controller] = ->(node_type, opts) { :camera_controller_cls }
+
     node = subject.build_node :group, :bbb, 'aaa' do
 
       gauge :fff, kk: 11 do
@@ -44,12 +81,12 @@ describe Hal::DefinitionBuilder do
 
     expect(node.children['fff'].type).to eq :gauge
     expect(node.children['fff'].path).to eq 'aaa/bbb/fff'
-    expect(node.children['fff'].controllers).to eq [[:some_controller, {path: 'aaaa'}]]
+    expect(node.children['fff'].controllers).to eq [[:some_controller_cls, {path: 'aaaa'}]]
     expect(node.children['fff'].options).to eq(kk: 11)
 
     expect(node.children['gggg'].type).to eq :camera
     expect(node.children['gggg'].path).to eq 'aaa/bbb/gggg'
-    expect(node.children['gggg'].controllers).to eq [[:camera_controller, {index: 111}], [:other_contr, a: 1, b: 'dd']]
+    expect(node.children['gggg'].controllers).to eq [[:camera_controller_cls, {index: 111}], [:other_contr_cls, a: 1, b: 'dd']]
     expect(node.children['gggg'].options).to eq(aaa: 'fbg', bb: 111)
 
     expect(node.children['ghj'].type).to eq :group
@@ -62,6 +99,8 @@ describe Hal::DefinitionBuilder do
   end
 
   it "should build full def" do
+    subject.controller_definitions[:some_controller] = ->(node_type, opts) { :some_controller_cls }
+
     definition = subject.build do
 
       gauge :fg do
@@ -82,7 +121,7 @@ describe Hal::DefinitionBuilder do
 
     expect(definition.root.children['fg'].type).to eq :gauge
     expect(definition.root.children['fg'].path).to eq 'fg'
-    expect(definition.root.children['fg'].controllers).to eq [[:some_controller, path: 'ggg', kk: 11]]
+    expect(definition.root.children['fg'].controllers).to eq [[:some_controller_cls, path: 'ggg', kk: 11]]
 
     expect(definition.root.children['xyz'].type).to eq :group
     expect(definition.root.children['xyz'].path).to eq 'xyz'

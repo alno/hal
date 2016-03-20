@@ -6,18 +6,4 @@ module Hal::Controller
   autoload :MotionCamera, 'hal/controller/motion_camera'
   autoload :GpioContact, 'hal/controller/gpio_contact'
 
-  def self.resolve(name)
-    factories[name]
-  end
-
-  def self.define(name, &factory)
-    factories[name] = factory
-  end
-
-  private
-
-  def self.factories
-    @factories ||= {}
-  end
-
 end

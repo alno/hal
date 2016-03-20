@@ -12,8 +12,16 @@ module Hal
   autoload :Runtime, 'hal/runtime'
   autoload :View, 'hal/view'
 
-  def self.load_definition(file)
-    DefinitionBuilder.new.build do
+  autoload :Package, 'hal/package'
+
+  module Packages; end
+
+  def self.load_definition(file, packages = [])
+    builder = DefinitionBuilder.new
+
+    packages.each{ |p| builder.import_package p }
+
+    builder.build do
       instance_eval File.read(file), file
     end
   end

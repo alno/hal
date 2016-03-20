@@ -1,7 +1,5 @@
 require "spec_helper"
 
-require "hal/modules/base"
-
 describe Hal::Runtime do
 
   it "should be created with single-node definition" do
@@ -13,7 +11,9 @@ describe Hal::Runtime do
 
   context "with deep definition" do
 
-    let(:aaa) { Hal::Definition::Node.new(:gauge, 'aaa', 'aaa', {}, [[:onewire, path: 'hhhh']], {}) }
+    let(:controller) { double(new: nil) }
+
+    let(:aaa) { Hal::Definition::Node.new(:gauge, 'aaa', 'aaa', {}, [[controller, path: 'hhhh']], {}) }
     let(:root) { Hal::Definition::Node.new(:group, '', '', {}, [], {'aaa' => aaa}) }
     let(:definition) { Hal::Definition.new(root) }
     let(:runtime) { described_class.new(definition) }

@@ -7,9 +7,9 @@ require 'slim'
 require 'database'
 require 'config'
 require 'hal'
-require 'hal/modules/base'
+require 'hal/packages/base'
 
-DEFINITION = Hal.load_definition('config/system.rb')
+DEFINITION = Hal.load_definition('config/system.rb', [Hal::Packages::Base])
 
 runtime = Hal::Runtime.new(DEFINITION)
 runtime.start
