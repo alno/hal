@@ -1,13 +1,5 @@
 class Hal::View::Contact < Hal::View::Base
 
-  def switch_on
-    send_command '1'
-  end
-
-  def switch_off
-    send_command '0'
-  end
-
   def as_json
     super.merge(last_known_state)
   end

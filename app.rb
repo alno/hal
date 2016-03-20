@@ -7,6 +7,7 @@ require 'slim'
 require 'database'
 require 'config'
 require 'hal'
+require 'hal/modules/base'
 
 DEFINITION = Hal.load_definition('config/system.rb')
 

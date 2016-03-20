@@ -1,6 +1,6 @@
 class Hal::Runtime
 
-  attr_reader :definition, :bus
+  attr_reader :definition, :bus, :controllers, :persistors
 
   def initialize(definition)
     @definition = definition
@@ -10,8 +10,10 @@ class Hal::Runtime
     @persistors = Array.new
 
     @definition.controllers.each do |n, c, o|
-      if cls = Hal::Controller.resolve(n.type, c)
-        @controllers << cls.new(@bus, n, o)
+      if factory = Hal::Controller.resolve(c)
+        @controllers << factory.call(n, o).new(@bus, n, o)
+      else
+        raise StandardError, "Couldn't resolve controller factory #{c.inspect}"
       end
     end
 
