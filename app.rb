@@ -8,8 +8,9 @@ require 'database'
 require 'config'
 require 'hal'
 require 'hal/packages/base'
+require 'hal/packages/onewire'
 
-DEFINITION = Hal.load_definition('config/system.rb', [Hal::Packages::Base])
+DEFINITION = Hal.load_definition('config/system.rb', [Hal::Packages::Base, Hal::Packages::Onewire])
 
 runtime = Hal::Runtime.new(DEFINITION)
 runtime.start

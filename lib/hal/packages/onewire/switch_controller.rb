@@ -1,6 +1,6 @@
 require 'onewire'
 
-class Hal::Controller::OnewireSwitch < Hal::Controller::Base
+class Hal::Packages::Onewire::SwitchController < Hal::Controller::Base
 
   def start
     @value = nil
