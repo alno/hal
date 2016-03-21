@@ -13,8 +13,7 @@ module Hal
   autoload :View, 'hal/view'
 
   autoload :Package, 'hal/package'
-
-  module Packages; end
+  autoload :Packages, 'hal/packages'
 
   def self.load_definition(file, packages = [])
     builder = DefinitionBuilder.new
