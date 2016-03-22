@@ -10,7 +10,7 @@ require 'hal'
 require 'hal/packages/base'
 require 'hal/packages/onewire'
 
-DEFINITION = Hal.load_definition('config/system.rb', [Hal::Packages::Base, Hal::Packages::Onewire])
+DEFINITION = Hal.load_definition('config/system.rb', [Hal::Packages::Base, Hal::Packages::Onewire, Hal::Packages::Gpio])
 
 runtime = Hal::Runtime.new(DEFINITION)
 runtime.start

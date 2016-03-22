@@ -41,7 +41,7 @@ class Hal::View::Camera < Hal::View::Base
   end
 
   def index
-    @index ||= node.controllers.select{ |c, o| c == :motion }.map{ |c, o| o[:index] } || -1
+    @index ||= node.options[:index] || -1
   end
 
   def records
