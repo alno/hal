@@ -1,7 +1,16 @@
-module Hal::Controller
+class Hal::Controller
+  attr_reader :bus, :node, :options
 
-  autoload :Base, 'hal/controller/base'
-  autoload :MotionCamera, 'hal/controller/motion_camera'
-  autoload :GpioContact, 'hal/controller/gpio_contact'
+  def initialize(bus, node, options)
+    @bus = bus
+    @node = node
+    @options = options
+  end
+
+  def start
+  end
+
+  def stop
+  end
 
 end

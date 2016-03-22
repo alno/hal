@@ -1,6 +1,6 @@
 require 'onewire'
 
-class Hal::Packages::Onewire::GaugeController < Hal::Controller::Base
+class Hal::Packages::Onewire::GaugeController < Hal::Controller
 
   def start
     @client = Onewire.client

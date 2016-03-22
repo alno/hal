@@ -1,4 +1,4 @@
-class Hal::Packages::Gpio::ContactController < Hal::Controller::Base
+class Hal::Packages::Gpio::ContactController < Hal::Controller
 
   def start
     @value = nil
