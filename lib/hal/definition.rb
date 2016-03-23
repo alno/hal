@@ -34,7 +34,7 @@ class Hal::Definition
   private
 
   def collect_controllers(node)
-    controllers = node.controllers.map{ |c, o| [node, c, o] }
+    controllers = node.controllers.map { |c, o| [node, c, o] }
 
     node.children.each_value do |c|
       controllers += collect_controllers(c)

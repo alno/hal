@@ -4,7 +4,7 @@ module Hal::Package
     @controller_definitions ||= {}
   end
 
-  def define_controller(name, classes={}, &block)
+  def define_controller(name, classes = {}, &block)
     controller_definitions[name] = \
       if block
         block

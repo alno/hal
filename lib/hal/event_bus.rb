@@ -1,13 +1,13 @@
 class Hal::EventBus
 
   def initialize
-    @subscriptions = Hash.new{ |h, k| h[k] = [] }
+    @subscriptions = Hash.new { |h, k| h[k] = [] }
   end
 
   def publish(topic, event)
     puts "Publishing #{event.inspect} in #{topic.inspect} topic"
 
-    @subscriptions[topic].each{ |s| s.call(event) }
+    @subscriptions[topic].each { |s| s.call(event) }
   end
 
   def subscribe(topic, handler)

@@ -6,12 +6,12 @@ class Hal::Runtime
     @definition = definition
     @bus = Hal::EventBus.new
 
-    @persistors = Array.new
+    @persistors = []
 
-    @controllers = @definition.controllers.map{ |n, c, o| c.new(@bus, n, o) }
+    @controllers = @definition.controllers.map { |n, c, o| c.new(@bus, n, o) }
 
     @definition.persistors.each do |n, p, o|
-      if cls = Hal::Persistor.resolve(n.type, p)
+      if (cls = Hal::Persistor.resolve(n.type, p))
         @persistors << cls.new(@bus, n, o)
       end
     end

@@ -18,7 +18,7 @@ module Hal
   def self.load_definition(file, packages = [])
     builder = DefinitionBuilder.new
 
-    packages.each{ |p| builder.import_package p }
+    packages.each { |p| builder.import_package p }
 
     builder.build do
       instance_eval File.read(file), file

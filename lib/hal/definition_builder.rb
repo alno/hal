@@ -4,7 +4,7 @@ class Hal::DefinitionBuilder
 
   def import_package(pkg)
     pkg.controller_definitions.each do |name, resolver|
-      if controller_definitions.has_key? name
+      if controller_definitions.key? name
         raise StandardError, "Controller #{name} already defined"
       else
         controller_definitions[name] = resolver
@@ -17,7 +17,7 @@ class Hal::DefinitionBuilder
   end
 
   def resolve_controller(name, node_type, options)
-    if resolver = controller_definitions[name]
+    if (resolver = controller_definitions[name])
       [resolver.call(node_type, options), options]
     else
       raise UnknownControllerError, "Unknown controller #{name}"
@@ -25,8 +25,8 @@ class Hal::DefinitionBuilder
   end
 
   def build(&block)
-    children = Hash.new
-    resolved_controllers = Array.new
+    children = {}
+    resolved_controllers = []
 
     # Build child nodes in dsl block
     NodeBuilder.new(self, :group, '', resolved_controllers, children).instance_eval(&block) if block
@@ -43,8 +43,8 @@ class Hal::DefinitionBuilder
         name
       end
 
-    children = Hash.new
-    resolved_controllers = controllers.map{ |n, **opts| resolve_controller(n, type, **opts) }
+    children = {}
+    resolved_controllers = controllers.map { |n, **opts| resolve_controller(n, type, **opts) }
 
     # Build child nodes in dsl block
     NodeBuilder.new(self, type, path, resolved_controllers, children).instance_eval(&block) if block

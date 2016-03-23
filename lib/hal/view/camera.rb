@@ -3,12 +3,11 @@ require 'database'
 class Hal::View::Camera < Hal::View::Base
   class Record < Sequel::Model
 
-    set_dataset( DB[:camera_events.as(:thumb)].
-      join(:camera_events.as(:video), :video__event => :thumb__event).
-      where(:thumb__file_type => 1, :video__file_type => 8).
-      select(:thumb__event => :event, :thumb__camera => :camera, :thumb__file_name => :thumb_path, :video__file_name => :video_path, :video__time => :time).
-      order{ video__time.desc }
-    )
+    set_dataset(DB[:camera_events.as(:thumb)]
+      .join(:camera_events.as(:video), video__event: :thumb__event)
+      .where(thumb__file_type: 1, video__file_type: 8)
+      .select(thumb__event: :event, thumb__camera: :camera, thumb__file_name: :thumb_path, video__file_name: :video_path, video__time: :time)
+      .order { video__time.desc })
 
     def video_url
       file_url video_path
@@ -19,7 +18,7 @@ class Hal::View::Camera < Hal::View::Base
     end
 
     def as_json
-      {time: time, video_url: video_url, thumb_url: thumb_url}
+      { time: time, video_url: video_url, thumb_url: thumb_url }
     end
 
     private
@@ -33,7 +32,7 @@ class Hal::View::Camera < Hal::View::Base
   end
 
   def self.records(cameras)
-    Record.where(:thumb__camera => cameras.map(&:index), :video__camera => cameras.map(&:index))
+    Record.where(thumb__camera: cameras.map(&:index), video__camera: cameras.map(&:index))
   end
 
   def stream_url

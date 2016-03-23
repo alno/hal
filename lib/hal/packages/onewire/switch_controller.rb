@@ -39,7 +39,7 @@ class Hal::Packages::Onewire::SwitchController < Hal::Controller
   def update
     puts "Updating switch #{node.path} from #{options[:path].inspect} in #{Time.now}"
 
-    if value = @client.read(options[:path])
+    if (value = @client.read(options[:path]))
       if value == @value
         puts "Skipping the same value..."
       else

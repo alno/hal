@@ -11,7 +11,7 @@ class Hal::View::Group < Hal::View::Base
   end
 
   def descendants_by_paths(prefix = nil)
-    Hash.new.tap do |h|
+    {}.tap do |h|
       each_descendant_with_path do |desc, path|
         abspath = prefix ? "#{prefix}/#{path}" : path
         h[abspath] = desc

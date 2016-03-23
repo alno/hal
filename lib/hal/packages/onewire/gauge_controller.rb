@@ -25,7 +25,7 @@ class Hal::Packages::Onewire::GaugeController < Hal::Controller
   def update
     puts "Updating gauge #{node.path} from #{options[:path].inspect} in #{Time.now}"
 
-    if value = @client.read(options[:path])
+    if (value = @client.read(options[:path]))
       bus.publish node.path, value
     else
       puts "No value avaliable for #{node.path}"
