@@ -14,27 +14,27 @@ describe Hal::EventBus do
         bus.subscribe('some-topic', subject.method(:call))
       end
 
-      it "should receive events in correct topic" do
+      it "receives events in correct topic" do
         expect(subject).to receive(:call).with('some-event')
 
         bus.publish('some-topic', 'some-event')
       end
 
-      it "should not receive events in wrong topic" do
-        expect(subject).to_not receive(:call).with('some-event')
+      it "doesn't receive events in wrong topic" do
+        expect(subject).not_to receive(:call).with('some-event')
 
         bus.publish('wrong-topic', 'some-event')
       end
 
-      it "should not receive events after unsubscription" do
-        expect(subject).to_not receive(:call).with('some-event')
+      it "doesn't receive events after unsubscription" do
+        expect(subject).not_to receive(:call).with('some-event')
 
         bus.unsubscribe('some-topic', subject.method(:call))
         bus.publish('some-topic', 'some-event')
       end
 
-      it "should not receive event only once after second subscription" do
-        expect(subject).to_not receive(:call).with('some-event').once
+      it "doesn't receive event only once after second subscription" do
+        expect(subject).not_to receive(:call).with('some-event').once
 
         bus.subscribe('some-topic', subject.method(:call))
         bus.publish('some-topic', 'some-event')
@@ -42,8 +42,8 @@ describe Hal::EventBus do
 
     end
 
-    it "should not receive events before subscription" do
-      expect(subject).to_not receive(:call).with('some-event')
+    it "doesn't receive events before subscription" do
+      expect(subject).not_to receive(:call).with('some-event')
 
       bus.publish('some-topic', 'some-event')
     end

@@ -2,19 +2,19 @@ require "spec_helper"
 
 describe Hal::DefinitionBuilder do
 
-  it "should build empty gauge with known controller" do
-    subject.controller_definitions[:some_controller_1] = ->(node_type, opts) { :some_controller_cls }
+  it "builds empty gauge with known controller" do
+    subject.controller_definitions[:some_controller_1] = ->(_type, _opts) { :some_controller_cls }
 
     node = subject.build_node :gauge, :fff, 'aaa', [:some_controller_1, x: 11], opt1: 111, aaa: 'bbb'
 
     expect(node.type).to eq :gauge
     expect(node.path).to eq 'aaa/fff'
-    expect(node.controllers).to eq [[:some_controller_cls, {x: 11}]]
+    expect(node.controllers).to eq [[:some_controller_cls, x: 11]]
     expect(node.options).to eq(opt1: 111, aaa: 'bbb')
   end
 
-  it "should build empty gauge with known controller with no opts" do
-    subject.controller_definitions[:some_controller_1] = ->(node_type, opts) { :some_controller_cls }
+  it "builds empty gauge with known controller with no opts" do
+    subject.controller_definitions[:some_controller_1] = ->(_type, _opts) { :some_controller_cls }
 
     node = subject.build_node :gauge, :fff, 'aaa', :some_controller_1, opt1: 111, aaa: 'bbb'
 
@@ -24,8 +24,8 @@ describe Hal::DefinitionBuilder do
     expect(node.options).to eq(opt1: 111, aaa: 'bbb')
   end
 
-  it "should build group with known controller" do
-    subject.controller_definitions[:some_controller] = ->(node_type, opts) { :some_controller_cls }
+  it "builds group with known controller" do
+    subject.controller_definitions[:some_controller] = ->(_type, _opts) { :some_controller_cls }
 
     node = subject.build_node :group, :bbb, '' do
       controller :some_controller, aa: 'aaaa'
@@ -33,11 +33,11 @@ describe Hal::DefinitionBuilder do
 
     expect(node.type).to eq :group
     expect(node.path).to eq 'bbb'
-    expect(node.controllers).to eq [[:some_controller_cls, {aa: 'aaaa'}]]
+    expect(node.controllers).to eq [[:some_controller_cls, aa: 'aaaa']]
   end
 
-  it "should build group with known controller with no opts" do
-    subject.controller_definitions[:some_controller] = ->(node_type, opts) { :some_controller_cls }
+  it "builds group with known controller with no opts" do
+    subject.controller_definitions[:some_controller] = ->(_type, _opts) { :some_controller_cls }
 
     node = subject.build_node :group, :bbb, '' do
       controller :some_controller
@@ -48,16 +48,16 @@ describe Hal::DefinitionBuilder do
     expect(node.controllers).to eq [[:some_controller_cls, {}]]
   end
 
-  it "should fail on unknown controller" do
-    expect {
+  it "fails on unknown controller" do
+    expect do
       subject.build_node :group, :bbb, '', [:some_controller_1, x: 11]
-    }.to raise_error Hal::DefinitionBuilder::UnknownControllerError
+    end.to raise_error Hal::DefinitionBuilder::UnknownControllerError
   end
 
-  it "should build complex group" do
-    subject.controller_definitions[:some_controller] = ->(node_type, opts) { :some_controller_cls }
-    subject.controller_definitions[:other_contr] = ->(node_type, opts) { :other_contr_cls }
-    subject.controller_definitions[:camera_controller] = ->(node_type, opts) { :camera_controller_cls }
+  it "builds complex group" do
+    subject.controller_definitions[:some_controller] = ->(_type, _opts) { :some_controller_cls }
+    subject.controller_definitions[:other_contr] = ->(_type, _opts) { :other_contr_cls }
+    subject.controller_definitions[:camera_controller] = ->(_type, _opts) { :camera_controller_cls }
 
     node = subject.build_node :group, :bbb, 'aaa' do
 
@@ -77,16 +77,16 @@ describe Hal::DefinitionBuilder do
     expect(node.path).to eq 'aaa/bbb'
     expect(node.controllers).to eq []
 
-    expect(node.children.keys.sort).to eq ['fff', 'gggg', 'ghj']
+    expect(node.children.keys.sort).to eq %w(fff gggg ghj)
 
     expect(node.children['fff'].type).to eq :gauge
     expect(node.children['fff'].path).to eq 'aaa/bbb/fff'
-    expect(node.children['fff'].controllers).to eq [[:some_controller_cls, {path: 'aaaa'}]]
+    expect(node.children['fff'].controllers).to eq [[:some_controller_cls, path: 'aaaa']]
     expect(node.children['fff'].options).to eq(kk: 11)
 
     expect(node.children['gggg'].type).to eq :camera
     expect(node.children['gggg'].path).to eq 'aaa/bbb/gggg'
-    expect(node.children['gggg'].controllers).to eq [[:camera_controller_cls, {index: 111}], [:other_contr_cls, a: 1, b: 'dd']]
+    expect(node.children['gggg'].controllers).to eq [[:camera_controller_cls, index: 111], [:other_contr_cls, a: 1, b: 'dd']]
     expect(node.children['gggg'].options).to eq(aaa: 'fbg', bb: 111)
 
     expect(node.children['ghj'].type).to eq :group
@@ -98,8 +98,8 @@ describe Hal::DefinitionBuilder do
     expect(node.children['ghj'].children['xxx'].controllers).to eq []
   end
 
-  it "should build full def" do
-    subject.controller_definitions[:some_controller] = ->(node_type, opts) { :some_controller_cls }
+  it "builds full def" do
+    subject.controller_definitions[:some_controller] = ->(_type, _opts) { :some_controller_cls }
 
     definition = subject.build do
 
@@ -117,7 +117,7 @@ describe Hal::DefinitionBuilder do
     expect(definition.root.path).to eq ''
     expect(definition.root.controllers).to eq []
 
-    expect(definition.root.children.keys.sort).to eq ['fg', 'xyz']
+    expect(definition.root.children.keys.sort).to eq %w(fg xyz)
 
     expect(definition.root.children['fg'].type).to eq :gauge
     expect(definition.root.children['fg'].path).to eq 'fg'
