@@ -1,5 +1,6 @@
 module Hal
   autoload :Util, 'hal/util'
+  autoload :Path, 'hal/path'
 
   autoload :NodeTypes, 'hal/node_types'
   autoload :Definition, 'hal/definition'
