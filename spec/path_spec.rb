@@ -9,6 +9,7 @@ describe Hal::Path do
   it "allows to create absolute path" do
     expect(p('/some/node')).to be_absolute
     expect(p('/node')).to be_absolute
+    expect(p('/')).to be_absolute
 
     expect(p('/some/node')).not_to be_relative
     expect(p('/node')).not_to be_relative
@@ -27,6 +28,8 @@ describe Hal::Path do
   it "normalizes absolute path" do
     expect(p('/some//node').to_s).to eq '/some/node'
     expect(p('//other').to_s).to eq '/other'
+    expect(p('/').to_s).to eq '/'
+    expect(p('////').to_s).to eq '/'
   end
 
   it "normalizes relative path" do
@@ -36,6 +39,7 @@ describe Hal::Path do
 
   it "checks path equality" do
     expect(p('/some')).to eq p('/some')
+    expect(p('/some')).not_to eq p('some')
   end
 
   it "checks path uniqueness" do
@@ -48,6 +52,7 @@ describe Hal::Path do
 
   it "allows to concat relative path to absolute" do
     expect(p('/obj') / p('aaa')).to eq p('/obj/aaa')
+    expect(p('/') / p('x')).to eq p('/x')
   end
 
   it "doesn't allow to concat absolute path to relative" do
