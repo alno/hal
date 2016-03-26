@@ -2,8 +2,15 @@ class Hal::Path
 
   attr_reader :segments
 
+  # Create path from sequence of path segments
+  def self.[](*args)
+    absolute, segments = collect_segments(*args)
+
+    new(segments, absolute)
+  end
+
   def self.root
-    @root ||= new('/')
+    @root ||= self['/']
   end
 
   def self.collect_segments(*args)
@@ -22,9 +29,9 @@ class Hal::Path
     end
   end
 
-  def initialize(*strs)
-    @absolute, @segments = self.class.collect_segments(*strs)
-    @segments = @segments.map(&:freeze).freeze
+  def initialize(segments, absolute=false)
+    @segments = segments.map(&:freeze).freeze
+    @absolute = absolute
   end
 
   def absolute?
@@ -36,7 +43,7 @@ class Hal::Path
   end
 
   def /(other)
-    self.class.new(self, other)
+    self.class[self, other]
   end
 
   def to_s

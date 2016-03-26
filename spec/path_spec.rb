@@ -3,7 +3,7 @@ require "spec_helper"
 describe Hal::Path do
 
   def p(s)
-    described_class.new(s)
+    described_class[s]
   end
 
   it "allows to create absolute path" do
