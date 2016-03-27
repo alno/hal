@@ -41,7 +41,7 @@ def normalize_path(path)
     path = path[1..-1]
   end
 
-  path
+  Hal::Path[path]
 end
 
 # Sending commands to items

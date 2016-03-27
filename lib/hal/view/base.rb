@@ -15,7 +15,7 @@ class Hal::View::Base
   end
 
   def send_command(cmd)
-    bus.publish(Hal::Util.join(path, 'commands'), cmd)
+    bus.publish(path / 'commands', cmd)
   end
 
   def title
@@ -23,7 +23,7 @@ class Hal::View::Base
   end
 
   def find(path)
-    path.split('/').inject self do |node, segment|
+    path.segments.inject self do |node, segment|
       node && node.children[segment]
     end
   end

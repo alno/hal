@@ -29,19 +29,14 @@ class Hal::DefinitionBuilder
     resolved_controllers = []
 
     # Build child nodes in dsl block
-    NodeBuilder.new(self, :group, '', resolved_controllers, children).instance_eval(&block) if block
+    NodeBuilder.new(self, :group, Hal::Path.root, resolved_controllers, children).instance_eval(&block) if block
 
     Hal::Definition.new(Hal::Definition::Node.new(:group, '', '', {}, resolved_controllers, children))
   end
 
   def build_node(type, name, basepath, *controllers, **options, &block)
     name = name.to_s
-    path = \
-      if basepath && !basepath.empty?
-        "#{basepath}/#{name}"
-      else
-        name
-      end
+    path = basepath / name
 
     children = {}
     resolved_controllers = controllers.map { |n, **opts| resolve_controller(n, type, **opts) }

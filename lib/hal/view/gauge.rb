@@ -3,10 +3,10 @@ require 'database'
 class Hal::View::Gauge < Hal::View::Base
 
   def values(from = nil, to = nil)
-    from ||= DB[:gauge_values].where('gauge = ?', node.path).min(:time)
+    from ||= DB[:gauge_values].where('gauge = ?', node.path.to_s).min(:time)
     to   ||= Time.now
 
-    DB[values_table(from, to)].where('gauge = ? AND time BETWEEN ? AND ?', node.path, from, to)
+    DB[values_table(from, to)].where('gauge = ? AND time BETWEEN ? AND ?', node.path.to_s, from, to)
   end
 
   def values_as_json(from = nil, to = nil)
@@ -25,7 +25,7 @@ class Hal::View::Gauge < Hal::View::Base
 
   # Get last known gauge value
   def last_known_state
-    s = DB[:gauge_values].where('gauge = ?', node.path).select(:time, :value).order(:time).last
+    s = DB[:gauge_values].where('gauge = ?', node.path.to_s).select(:time, :value).order(:time).last
     s ||= { value: nil, time: Time.at(0) }
     s
   end
