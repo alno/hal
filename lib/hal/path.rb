@@ -1,6 +1,7 @@
 class Hal::Path
 
-  attr_reader :segments
+  attr_reader :segments, :absolute
+  alias absolute? absolute
 
   # Create path from sequence of path segments
   def self.[](*args)
@@ -29,13 +30,9 @@ class Hal::Path
     end
   end
 
-  def initialize(segments, absolute=false)
+  def initialize(segments, absolute = false)
     @segments = segments.map(&:freeze).freeze
     @absolute = absolute
-  end
-
-  def absolute?
-    @absolute
   end
 
   def relative?
