@@ -5,7 +5,7 @@ class Hal::View::Base
 
   def_delegators :@node, :type, :name, :options
 
-  attr_reader :bus, :node, :children
+  attr_reader :bus, :node, :path, :children
 
   def initialize(bus, node, path, children)
     @bus = bus
@@ -15,7 +15,7 @@ class Hal::View::Base
   end
 
   def send_command(cmd)
-    bus.publish(path / 'commands', cmd)
+    bus.publish(node.path / 'commands', cmd)
   end
 
   def title
