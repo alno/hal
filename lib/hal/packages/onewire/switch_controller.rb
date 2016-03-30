@@ -7,11 +7,11 @@ class Hal::Packages::Onewire::SwitchController < Hal::Controller
     @client = Onewire.client
     @thread = Thread.new { run }
 
-    bus.subscribe(node.path / :commands, method(:handle_command))
+    subscribe(:commands, :handle_command)
   end
 
   def terminate
-    bus.unsubscribe(node.path / :commands, method(:handle_command))
+    unsubscribe(:commands, :handle_command)
 
     @thread.terminate
     @thread = nil

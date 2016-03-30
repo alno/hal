@@ -13,4 +13,24 @@ class Hal::Controller
   def stop
   end
 
+  private
+
+  def subscribe(path, method_name)
+    bus.subscribe(expand_path(path), method(method_name))
+  end
+
+  def unsubscribe(path, method_name)
+    bus.unsubscribe(expand_path(path), method(method_name))
+  end
+
+  def expand_path(path)
+    path = Hal::Path[path]
+
+    if path.absolute?
+      path
+    else
+      node.path / path
+    end
+  end
+
 end
