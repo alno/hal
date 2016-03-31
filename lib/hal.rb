@@ -7,6 +7,7 @@ module Hal
   autoload :DefinitionBuilder, 'hal/definition_builder'
   autoload :EventBus, 'hal/event_bus'
 
+  autoload :Agent, 'hal/agent'
   autoload :Controller, 'hal/controller'
   autoload :Persistor, 'hal/persistor'
 
