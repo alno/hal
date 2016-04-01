@@ -2,13 +2,6 @@ require 'database'
 
 class Hal::Persistor::Contact < Hal::Persistor::Base
 
-  def start
-    bus.subscribe node.path, method(:update)
-  end
-
-  def stop
-  end
-
   private
 
   def update(val)
