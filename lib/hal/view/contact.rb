@@ -8,6 +8,10 @@ class Hal::View::Contact < Hal::View::Base
     last_known_state[:value]
   end
 
+  def last_change_time
+    last_known_state[:time]
+  end
+
   private
 
   # Get last known gauge value

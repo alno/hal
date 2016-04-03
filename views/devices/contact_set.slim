@@ -1,6 +1,6 @@
 h2 Contacts
 
 - contacts.each do |path, contact|
-  .ui.checkbox
+  .ui.checkbox.with-popup data-content="Changed #{contact.last_change_time.strftime('%Y-%m-%d %H:%M')}"
     input name="public" type="checkbox" checked=(contact.value.to_i == 1) disabled=true
     label= contact.title

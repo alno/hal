@@ -89,4 +89,5 @@ $(function() {
   });
 
   $('.ui.accordion').accordion();
+  $('.with-popup').popup();
 });
