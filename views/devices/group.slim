@@ -7,5 +7,8 @@
 - unless (switches = descendants.select{ |_, d| d.type == :switch }).empty?
   == slim :'devices/switch_set', locals: { switches: switches }
 
+- unless (contacts = descendants.select{ |_, d| d.type == :contact }).empty?
+  == slim :'devices/contact_set', locals: { contacts: contacts }
+
 - unless (gauges = descendants.select{ |_, d| d.type == :gauge }).empty?
   == slim :'devices/gauge_set', locals: { gauges: gauges }

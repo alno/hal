@@ -1,0 +1,6 @@
+h2 Contacts
+
+- contacts.each do |path, contact|
+  .ui.checkbox
+    input name="public" type="checkbox" checked=(contact.value.to_i == 1) disabled=true
+    label= contact.title
