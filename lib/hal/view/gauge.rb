@@ -6,7 +6,7 @@ class Hal::View::Gauge < Hal::View::Base
     from ||= DB[:gauge_values].where('gauge = ?', node.path.to_s).min(:time)
     to   ||= Time.now
 
-    DB[values_table(from, to)].where('gauge = ? AND time BETWEEN ? AND ?', node.path.to_s, from, to)
+    DB[values_table(from, to)].where('gauge = ? AND time BETWEEN ? AND ?', node.path.to_s, from, to).order{ time.asc }
   end
 
   def values_as_json(from = nil, to = nil)
