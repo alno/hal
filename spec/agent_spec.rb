@@ -11,7 +11,7 @@ describe Hal::Agent do
 
   %i(subscribe unsubscribe).each do |sym|
 
-    cls = Class.new Hal::Agent do
+    cls = Class.new described_class do
       def some_method(x); end
     end
 
