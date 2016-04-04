@@ -1,7 +1,5 @@
 require "spec_helper"
 
-
-
 describe Hal::Agent do
 
   let(:bus) { double }

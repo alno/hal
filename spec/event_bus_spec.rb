@@ -48,7 +48,6 @@ describe Hal::EventBus do
 
     end
 
-
     context "after calling #subscribe with path" do
 
       before do
