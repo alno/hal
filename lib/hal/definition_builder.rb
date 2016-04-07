@@ -25,48 +25,70 @@ class Hal::DefinitionBuilder
   end
 
   def build(&block)
-    children = {}
-    resolved_controllers = []
+    builder = NodeBuilder.new(self, :group, '', Hal::Path.root)
+    builder.apply(&block)
 
-    # Build child nodes in dsl block
-    NodeBuilder.new(self, :group, Hal::Path.root, resolved_controllers, children).instance_eval(&block) if block
-
-    Hal::Definition.new(Hal::Definition::Node.new(:group, '', '', {}, resolved_controllers, children))
-  end
-
-  def build_node(type, name, basepath, *controllers, **options, &block)
-    name = name.to_s
-    path = basepath / name
-
-    children = {}
-    resolved_controllers = controllers.map { |n, **opts| resolve_controller(n, type, **opts) }
-
-    # Build child nodes in dsl block
-    NodeBuilder.new(self, type, path, resolved_controllers, children).instance_eval(&block) if block
-
-    Hal::Definition::Node.new(type, name, path, options, resolved_controllers, children)
+    Hal::Definition.new(builder.result)
   end
 
   class NodeBuilder
 
-    def initialize(def_builder, type, path, resolved_controllers, children)
+    attr_reader :type, :path
+    attr_accessor :options
+
+    def initialize(def_builder, type, name, path)
       @def_builder = def_builder
       @type = type
+      @name = name
       @path = path
-      @children = children
-      @resolved_controllers = resolved_controllers
+      @options = options
+      @children = {}
+      @controllers = []
+    end
+
+    def apply(&block)
+      NodeDsl.new(self).instance_eval(&block)
+    end
+
+    def add_controller(name, **controller_options)
+      @controllers << @def_builder.resolve_controller(name, @type, controller_options)
+    end
+
+    def add_child(type, name, *controllers, **options, &block)
+      name = name.to_s
+
+      builder = NodeBuilder.new(@def_builder, type, name, @path / name)
+      builder.options = options
+
+      # Register controllers
+      controllers.each { |c, **opts| builder.add_controller c, **opts }
+
+      # Call block
+      builder.apply(&block) if block
+
+      @children[name] = builder.result
+    end
+
+    def result
+      Hal::Definition::Node.new(@type, @name, @path, @options, @controllers, @children)
+    end
+
+  end
+
+  class NodeDsl
+
+    def initialize(builder)
+      @builder = builder
     end
 
     Hal::NodeTypes::TYPES.each do |type|
       define_method type do |name, *controllers, **options, &block|
-        name = name.to_s
-
-        @children[name] = @def_builder.build_node(type, name, @path, *controllers, **options, &block)
+        @builder.add_child type, name, *controllers, **options, &block
       end
     end
 
     def controller(name, **options)
-      @resolved_controllers << @def_builder.resolve_controller(name, @type, options)
+      @builder.add_controller name, **options
     end
 
   end
