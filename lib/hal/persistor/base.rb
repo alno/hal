@@ -1,12 +1,6 @@
 class Hal::Persistor::Base < Hal::Agent
 
-  def start
-    subscribe '', :update
-  end
-
-  def stop
-    unsubscribe '', :update
-  end
+  subscribe '', :update
 
   private
 
