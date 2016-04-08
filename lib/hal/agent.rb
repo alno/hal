@@ -1,4 +1,17 @@
 class Hal::Agent
+
+  class << self
+
+    def subscriptions
+      @subscriptions ||= {}
+    end
+
+    def subscribe(path, method_name)
+      subscriptions[path.to_s] = method_name
+    end
+
+  end
+
   attr_reader :bus, :node, :options
 
   def initialize(bus, node, options)
@@ -8,9 +21,11 @@ class Hal::Agent
   end
 
   def start
+    self.class.subscriptions.each{ |p, m| subscribe p, m }
   end
 
   def stop
+    self.class.subscriptions.each{ |p, m| unsubscribe p, m }
   end
 
   private
