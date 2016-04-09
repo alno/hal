@@ -68,7 +68,11 @@ class Hal::Agent
   def run
     loop do
       begin
-        @timers.wait
+        if @timers.empty?
+          sleep 100
+        else
+          @timers.wait
+        end
       rescue => e
         puts e.backtrace.inspect
       end
