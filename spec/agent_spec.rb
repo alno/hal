@@ -54,6 +54,10 @@ describe Hal::Agent do
     end
 
     it "unsubscribes when stopping" do
+      allow(bus).to receive(:subscribe)
+
+      subject.start
+
       expect(bus).to receive(:unsubscribe).with(Hal::Path['/some/node/fff'], subject.method(:other_method))
 
       subject.stop
