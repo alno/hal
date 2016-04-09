@@ -36,7 +36,7 @@ class Hal::Agent
     @timers = create_timers
 
     # Start timers
-    self.class.timers.each { |p, m| @timers.every(p, &method(m)) }
+    self.class.timers.each { |p, m| @timers.every(p) { send(m) } }
 
     # Start subscriptions
     self.class.subscriptions.each { |p, m| subscribe(p, m) }
@@ -67,7 +67,11 @@ class Hal::Agent
 
   def run
     loop do
-      @timers.wait
+      begin
+        @timers.wait
+      rescue => e
+        puts e.backtrace.inspect
+      end
     end
   end
 

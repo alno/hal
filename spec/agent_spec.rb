@@ -84,7 +84,7 @@ describe Hal::Agent do
     end
 
     it "created timer when starting" do
-      expect(subject_timers).to receive(:every).with(15, &subject.method(:do_something))
+      expect(subject_timers).to receive(:every).with(15)
 
       subject.start
     end

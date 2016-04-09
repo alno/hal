@@ -2,30 +2,14 @@ require 'onewire'
 
 class Hal::Packages::Onewire::GaugeController < Hal::Controller
 
-  def start
-    @client = Onewire.client
-    @thread = Thread.new { run }
-  end
-
-  def stop
-    @thread.terminate
-    @thread = nil
-    @client = nil
-  end
+  every 60, :update
 
   private
-
-  def run
-    loop do
-      sleep(60 - Time.now.sec % 60)
-      update
-    end
-  end
 
   def update
     puts "Updating gauge #{node.path} from #{options[:path].inspect} in #{Time.now}"
 
-    if (value = @client.read(options[:path]))
+    if (value = Onewire.client.read(options[:path]))
       bus.publish node.path, value
     else
       puts "No value avaliable for #{node.path}"

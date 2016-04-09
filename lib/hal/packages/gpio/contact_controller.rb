@@ -1,24 +1,8 @@
 class Hal::Packages::Gpio::ContactController < Hal::Controller
 
-  def start
-    @value = nil
-    @thread = Thread.new { run }
-  end
-
-  def terminate
-    @thread.terminate
-    @thread = nil
-    @value = nil
-  end
+  every 0.5, :update
 
   private
-
-  def run
-    loop do
-      sleep(0.5)
-      update
-    end
-  end
 
   def update
     puts "Updating contact #{node.path} from #{options[:pin].inspect} in #{Time.now}"
