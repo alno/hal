@@ -1,3 +1,5 @@
+require 'timers'
+
 class Hal::Agent
 
   class << self
@@ -8,6 +10,14 @@ class Hal::Agent
 
     def subscribe(path, method_name)
       subscriptions[path.to_s] = method_name
+    end
+
+    def every(seconds, method_name)
+      timers << [seconds, method_name]
+    end
+
+    def timers
+      @timers ||= []
     end
 
   end
@@ -21,14 +31,45 @@ class Hal::Agent
   end
 
   def start
-    self.class.subscriptions.each{ |p, m| subscribe p, m }
+    raise StandardError, "Already started" if @thread
+
+    @timers = create_timers
+
+    # Start timers
+    self.class.timers.each { |p, m| @timers.every(p, &method(m)) }
+
+    # Start subscriptions
+    self.class.subscriptions.each { |p, m| subscribe(p, m) }
+
+    # Start thread
+    @thread = create_thread
   end
 
   def stop
-    self.class.subscriptions.each{ |p, m| unsubscribe p, m }
+    raise StandardError, "Not started" unless @thread
+
+    self.class.subscriptions.each { |p, m| unsubscribe(p, m) }
+
+    @thread.terminate
+    @thread = nil
+    @timers = nil
   end
 
   private
+
+  def create_timers
+    Timers::Group.new
+  end
+
+  def create_thread
+    Thread.new { run }
+  end
+
+  def run
+    loop do
+      @timers.wait
+    end
+  end
 
   def subscribe(path, method_name)
     bus.subscribe(expand_path(path), method(method_name))

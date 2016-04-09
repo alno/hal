@@ -13,6 +13,14 @@ describe Hal::Agent do
 
   subject { cls.new bus, node, {} }
 
+  let(:subject_timers) { double("Timers") }
+  let(:subject_thread) { double("Thread", terminate: nil) }
+
+  before do
+    allow(subject).to receive(:create_timers).and_return(subject_timers)
+    allow(subject).to receive(:create_thread).and_return(subject_thread)
+  end
+
   %i(subscribe unsubscribe).each do |sym|
 
     context "##{sym}" do
@@ -61,6 +69,24 @@ describe Hal::Agent do
       expect(bus).to receive(:unsubscribe).with(Hal::Path['/some/node/fff'], subject.method(:other_method))
 
       subject.stop
+    end
+
+  end
+
+  context "static every" do
+
+    let :cls do
+      Class.new described_class do
+        every 15, :do_something
+
+        def do_something(x); end
+      end
+    end
+
+    it "created timer when starting" do
+      expect(subject_timers).to receive(:every).with(15, &subject.method(:do_something))
+
+      subject.start
     end
 
   end
