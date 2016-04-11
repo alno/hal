@@ -7,7 +7,7 @@ Sequel.migration do
 
       column :value, 'json', null: false
 
-      primary_key [ :node, :time ]
+      primary_key [:node, :time]
     end
   end
 

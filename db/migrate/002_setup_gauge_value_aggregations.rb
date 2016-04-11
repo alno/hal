@@ -7,7 +7,7 @@ Sequel.migration do
 
       column :value, 'real', null: false
 
-      primary_key [ :gauge, :time ]
+      primary_key [:gauge, :time]
     end
 
     create_table :gauge_value_days do
@@ -16,7 +16,7 @@ Sequel.migration do
 
       column :value, 'real', null: false
 
-      primary_key [ :gauge, :time ]
+      primary_key [:gauge, :time]
     end
   end
 

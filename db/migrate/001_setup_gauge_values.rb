@@ -7,7 +7,7 @@ Sequel.migration do
 
       column :value, 'real', null: false
 
-      primary_key [ :gauge, :time ]
+      primary_key [:gauge, :time]
     end
   end
 
