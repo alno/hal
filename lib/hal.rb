@@ -1,3 +1,5 @@
+require 'logger'
+
 module Hal
   autoload :Util, 'hal/util'
   autoload :Path, 'hal/path'
@@ -17,13 +19,23 @@ module Hal
   autoload :Package, 'hal/package'
   autoload :Packages, 'hal/packages'
 
-  def self.load_definition(file, packages = [])
-    builder = DefinitionBuilder.new
+  class << self
 
-    packages.each { |p| builder.import_package p }
+    def load_definition(file, packages = [])
+      builder = DefinitionBuilder.new
 
-    builder.build do
-      instance_eval File.read(file), file
+      packages.each { |p| builder.import_package p }
+
+      builder.build do
+        instance_eval File.read(file), file
+      end
     end
+
+    attr_writer :logger
+
+    def logger
+      @logger ||= Logger.new(STDOUT)
+    end
+
   end
 end
