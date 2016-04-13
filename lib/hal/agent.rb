@@ -74,7 +74,7 @@ class Hal::Agent
           @timers.wait
         end
       rescue => e
-        puts e.backtrace.inspect
+        Hal.logger.error e.backtrace.inspect
       end
     end
   end
