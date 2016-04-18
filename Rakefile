@@ -1,6 +1,6 @@
 #!/usr/bin/env rake
 
-$:.unshift('./lib')
+$LOAD_PATH.unshift('./lib')
 
 namespace :db do
 
@@ -28,14 +28,16 @@ namespace :gauges do
     require 'database'
 
     [:hour, :day].each do |agg|
-      groupped_gauges = DB[:gauge_values].
-        where("time < date_trunc('#{agg}', current_timestamp)").
-        group{ `gauge, date_trunc('#{agg}', time)` }.
-        select{ `gauge, date_trunc('#{agg}', time) AS start, date_trunc('#{agg}', time) + interval '1 #{agg}' AS end, AVG(value) AS value` }
+      groupped_gauges = \
+        DB[:gauge_values]
+        .where("time < date_trunc('#{agg}', current_timestamp)")
+        .group { `gauge, date_trunc('#{agg}', time)` }
+        .select { `gauge, date_trunc('#{agg}', time) AS start, date_trunc('#{agg}', time) + interval '1 #{agg}' AS end, AVG(value) AS value` }
 
-      new_aggregations = DB[groupped_gauges => :g].
-        where("NOT EXISTS (SELECT 1 FROM gauge_value_#{agg}s a WHERE a.gauge = g.gauge AND time BETWEEN g.start AND g.end)").
-        select{ `g.gauge, g.start + 0.5 * (g.end - g.start), g.value` }
+      new_aggregations = \
+        DB[groupped_gauges => :g]
+        .where("NOT EXISTS (SELECT 1 FROM gauge_value_#{agg}s a WHERE a.gauge = g.gauge AND time BETWEEN g.start AND g.end)")
+        .select { `g.gauge, g.start + 0.5 * (g.end - g.start), g.value` }
 
       DB["gauge_value_#{agg}s".to_sym].import [:gauge, :time, :value], new_aggregations
     end
@@ -59,11 +61,11 @@ namespace :records do
       puts "Removing records: #{ids.inspect}"
 
       # Remove old records from database
-      DB[:camera_events].where(:id => ids).delete
+      DB[:camera_events].where(id: ids).delete
 
       # Remove old record files
       files.each do |f|
-        File.delete f if File.exists? f
+        File.delete f if File.exist? f
       end
     end
   end
@@ -76,11 +78,11 @@ namespace :assets do
     system('npm install', chdir: 'front')
   end
 
-  task :precompile => :install do
+  task precompile: :install do
     system('npm run build', chdir: 'front')
   end
 
-  task :watch => :install do
+  task watch: :install do
     system('npm run watch', chdir: 'front')
   end
 
