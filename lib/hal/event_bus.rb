@@ -15,11 +15,15 @@ class Hal::EventBus
   def subscribe(topic, handler)
     topic = topic.to_s
 
+    Hal.logger.debug "Subscribing #{handler.inspect} to #{topic.inspect} topic"
+
     @subscriptions[topic] << handler unless @subscriptions[topic].include? handler
   end
 
   def unsubscribe(topic, handler)
     topic = topic.to_s
+
+    Hal.logger.debug "Unsubscribing #{handler.inspect} from #{topic.inspect} topic"
 
     @subscriptions[topic].delete(handler)
   end
