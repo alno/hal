@@ -71,6 +71,22 @@ describe Hal::Agent do
       subject.stop
     end
 
+    context "in subclass" do
+
+      let(:subclass) { Class.new(cls) }
+      subject { subclass.new bus, node, {} }
+
+      it "produces subscriptions" do
+        expect(subclass.subscriptions).to eq('fff' => :other_method)
+      end
+
+      it "subscribes when starting" do
+        expect(bus).to receive(:subscribe).with(Hal::Path['/some/node/fff'], subject.method(:other_method))
+
+        subject.start
+      end
+    end
+
   end
 
   context "static every" do

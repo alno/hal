@@ -20,6 +20,11 @@ class Hal::Agent
       @timers ||= []
     end
 
+    def inherited(subclass)
+      super
+      subclass.instance_variable_set :@subscriptions, subscriptions.dup
+    end
+
   end
 
   attr_reader :bus, :node, :options
